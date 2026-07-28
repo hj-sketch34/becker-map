@@ -79,5 +79,27 @@
   "East Palo Alto, CA, USA": {
     "lat": "37.4688273",
     "lon": "-122.1410750"
+  },
+  "Fair Oaks School, Redwood City, CA, USA": null,
+  "Hawes Park, Redwood City, CA, USA": {
+    "lat": "37.4721740",
+    "lon": "-122.2310796"
+  },
+  "3525 Alameda de las Pulgas, Menlo Park, CA, Menlo Park, CA, USA": {
+    "lat": "37.4326279",
+    "lon": "-122.2025317"
+  },
+  "Project Safety Net, Palo Alto, CA, USA": {
+    "lat": "37.4182105",
+    "lon": "-122.1081406"
+  },
+  "Bistro Vida, Menlo Park, CA, USA": {
+    "lat": "37.4525570",
+    "lon": "-122.1835740"
+  },
+  "Reach and Teach, San Mateo, CA, USA": null,
+  "Martin Elementary School, South San Francisco, CA, USA": {
+    "lat": "37.6635446",
+    "lon": "-122.4094163"
   }
 }

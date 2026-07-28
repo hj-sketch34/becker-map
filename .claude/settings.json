@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/huckjagerson/Desktop/Projects/senator-map/scripts/auto_publish_hook.sh",
+            "timeout": 120,
+            "statusMessage": "Auto-publishing Becker map to GitHub..."
+          }
+        ]
+      }
+    ]
+  }
+}
