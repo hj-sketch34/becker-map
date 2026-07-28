@@ -1,6 +1,17 @@
 {
   "pins": [
     {
+      "title": "$1.5 million secured to renovate the Community Services Agency's Mountain View headquarters",
+      "category": "infrastructure",
+      "year": "2025",
+      "location_name": "Community Services Agency (CSA) of Mountain View",
+      "city": "Mountain View",
+      "summary": "Senator Becker secured $1.5 million in state funding to renovate the Mountain View headquarters of the Community Services Agency of Mountain View, Los Altos and Los Altos Hills, which serves more than 6,000 residents. The renovated headquarters expanded the food pantry and modernized the building, and reopened with a ribbon-cutting in 2025.",
+      "source_url": "https://sd13.senate.ca.gov/news/newsletters/may-30-2025/creating-change-may-2025",
+      "lat": 37.3893889,
+      "lon": -122.0832101
+    },
+    {
       "title": "$2 million helped complete East Palo Alto's first regulation football field",
       "category": "infrastructure",
       "year": "2025",
@@ -24,7 +35,7 @@
     },
     {
       "title": "Celebrated 10 years of the Genentech–South San Francisco schools STEM partnership",
-      "category": "community",
+      "category": "recognition",
       "year": "2025",
       "location_name": "Genentech (Futurelab / SSFUSD partnership)",
       "city": "South San Francisco",
@@ -35,7 +46,7 @@
     },
     {
       "title": "Launched emergency food drive for families facing SNAP loss",
-      "category": "community",
+      "category": "recognition",
       "year": "2025",
       "location_name": "Senator Josh Becker District Office",
       "city": "Menlo Park",
@@ -46,7 +57,7 @@
     },
     {
       "title": "Named Olga Melo the Senate District 13 2025 Woman of the Year",
-      "category": "community",
+      "category": "recognition",
       "year": "2025",
       "location_name": "",
       "city": "Mountain View",
@@ -100,6 +111,28 @@
       "lon": -122.1598465
     },
     {
+      "title": "Lutticken's Deli named Senate District 13 Small Business of the Year",
+      "category": "recognition",
+      "year": "2024",
+      "location_name": "Lutticken's Deli & After 5 Restaurant",
+      "city": "Menlo Park",
+      "summary": "Senator Becker named Lutticken's Deli & After 5 Restaurant his 2024 Small Business of the Year. The longtime Menlo Park family business is known for donating food to local veterans, sponsoring youth sports, and feeding people in need during the pandemic.",
+      "source_url": "https://sd13.senate.ca.gov/node/805",
+      "lat": 37.423,
+      "lon": -122.2073
+    },
+    {
+      "title": "Move Mountain View named Senate District 13 Nonprofit of the Year",
+      "category": "recognition",
+      "year": "2024",
+      "location_name": "Move Mountain View",
+      "city": "Mountain View",
+      "summary": "Senator Becker named Move Mountain View his 2024 Nonprofit of the Year. The group addresses homelessness with safe overnight parking, services, and hygiene facilities for residents living in their vehicles.",
+      "source_url": "https://sd13.senate.ca.gov/news/newsletters/june-27-2024/create-change-june-2024",
+      "lat": 37.3861,
+      "lon": -122.0839
+    },
+    {
       "title": "$2 million secured for farmworker & senior housing in Half Moon Bay",
       "category": "housing",
       "year": "2023",
@@ -109,17 +142,6 @@
       "source_url": "https://sd13.senate.ca.gov/news/press-release/december-21-2023/in-fight-to-provide-farmworker-housing-senator-becker-secures-2",
       "lat": 37.4645093,
       "lon": -122.4384145
-    },
-    {
-      "title": "$1.5 million secured for a Mountain View social-services agency",
-      "category": "health",
-      "year": "2023",
-      "location_name": "Community Services Agency (CSA) of Mountain View",
-      "city": "Mountain View",
-      "summary": "Becker secured $1.5 million in state funds for the Community Services Agency of Mountain View, Los Altos and Los Altos Hills, which provides social services to local families. He presented the check at the agency's Mountain View headquarters.",
-      "source_url": "https://sd13.senate.ca.gov/news/press-release/december-8-2023/senator-josh-becker-presents-check-15-million-to-the-community",
-      "lat": 37.3893889,
-      "lon": -122.0832101
     },
     {
       "title": "$1 million secured for senior affordable housing in North Fair Oaks",
@@ -197,6 +219,28 @@
       "source_url": "https://sd13.senate.ca.gov/news/press-release/june-29-2023/legislature-approves-balanced-budget-supports-key-senate-district",
       "lat": 37.3790629,
       "lon": -122.116578
+    },
+    {
+      "title": "Spoke at the groundbreaking for LifeMoves transitional housing in the Baylands",
+      "category": "recognition",
+      "year": "2023",
+      "location_name": "LifeMoves modular transitional housing",
+      "city": "Palo Alto",
+      "summary": "Senator Becker spoke at the October 2023 groundbreaking for a LifeMoves modular transitional-housing project in the Palo Alto Baylands that will serve about 100 people at a time. Becker has worked to secure state Homekey funding for projects like it.",
+      "source_url": "https://www.almanacnews.com/news/2023/11/01/palo-alto-launches-construction-on-transitional-housing-in-the-baylands/",
+      "lat": 37.4139,
+      "lon": -122.1074
+    },
+    {
+      "title": "ALAS named Senate District 13 Nonprofit of the Year",
+      "category": "recognition",
+      "year": "2023",
+      "location_name": "Ayudando Latinos A Soñar (ALAS)",
+      "city": "Half Moon Bay",
+      "summary": "Senator Becker named Ayudando Latinos A Soñar (ALAS) his 2023 California Nonprofit of the Year. The Half Moon Bay nonprofit advocates for farmworkers and provides social services, and was recognized for supporting the community after the January 2023 Half Moon Bay farmworker shootings.",
+      "source_url": "https://sd13.senate.ca.gov/news/in-the-news/june-9-2023/kron-4-alas-recognition-nonprofit-the-year",
+      "lat": 37.4636,
+      "lon": -122.4286
     },
     {
       "title": "$4.45 million secured to convert a parking lot into a downtown park",
@@ -277,7 +321,7 @@
     },
     {
       "title": "Named Project Safety Net of Palo Alto the 13th Senate District's Nonprofit of the Year",
-      "category": "community",
+      "category": "recognition",
       "year": "2022",
       "location_name": "Project Safety Net",
       "city": "Palo Alto",
@@ -288,7 +332,7 @@
     },
     {
       "title": "Named Reach and Teach the 2022 Small Business of the Year for Senate District 13",
-      "category": "community",
+      "category": "recognition",
       "year": "2022",
       "location_name": "Reach and Teach",
       "city": "San Mateo",
@@ -321,7 +365,7 @@
     },
     {
       "title": "Named Bistro Vida the 13th Senate District's Small Business of the Year",
-      "category": "community",
+      "category": "recognition",
       "year": "2021",
       "location_name": "Bistro Vida",
       "city": "Menlo Park",
@@ -332,7 +376,7 @@
     },
     {
       "title": "Championed statewide Ruby Bridges Walk to School Day at Martin Elementary",
-      "category": "community",
+      "category": "recognition",
       "year": "2021",
       "location_name": "Martin Elementary School",
       "city": "South San Francisco",
@@ -340,6 +384,17 @@
       "source_url": "https://sd13.senate.ca.gov/news/press-release/november-17-2021/honoring-civil-rights-icon-ruby-bridges-updated-more-video#ruby-bridges-walk-to-school-day-martin-elementary",
       "lat": 37.6635446,
       "lon": -122.4094163
+    },
+    {
+      "title": "$8 million secured for downtown Mountain View affordable housing (Lot 12)",
+      "category": "housing",
+      "year": "2021",
+      "location_name": "Mountain View Lot 12 Affordable Housing",
+      "city": "Mountain View",
+      "summary": "Senator Becker helped secure  million in state budget funding for Mountain View's downtown Lot 12 project. It replaces a city parking lot with 120 affordable apartments, including homes set aside for people exiting homelessness.",
+      "source_url": "https://www.mv-voice.com/news/2021/08/25/mountain-view-city-council-scraps-downtown-parking-to-build-120-affordable-apartments/",
+      "lat": 37.3897,
+      "lon": -122.0817
     }
   ],
   "statewide": [
@@ -968,6 +1023,6 @@
     "infrastructure": "#455a64",
     "tech": "#00695c",
     "legislation": "#757575",
-    "community": "#ad1457"
+    "recognition": "#ad1457"
   }
 }

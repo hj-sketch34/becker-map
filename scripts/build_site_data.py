@@ -33,7 +33,10 @@ CATEGORY_COLORS = {
     "infrastructure": "#455a64",
     "tech": "#00695c",
     "legislation": "#757575",
-    "community": "#ad1457",  # shows of support — the senator showing up for constituents
+    "recognition": "#ad1457",  # shows of support / appreciation — ribbon-cuttings,
+                               # food drives, and "___ of the Year" awards. Kept as
+                               # its own color so honors don't blend into the funding
+                               # and legislative pins. (Replaced "community".)
 }
 
 

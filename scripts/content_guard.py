@@ -28,7 +28,7 @@ Use it from the command line:
     python3 scripts/content_guard.py            (runs the built-in self-test)
 
 Or import it in other scripts:
-    from content_guard import check_source, check_language
+    from content_guard import check_source, check_language, check_source_stance
 """
 
 import sys
@@ -243,6 +243,52 @@ JARGON_TERMS = [
 ]
 
 
+# ---------------------------------------------------------------------------
+# JOB 3 — SOURCE-STANCE GUARDRAIL (added at Huck's request)
+# ---------------------------------------------------------------------------
+#
+# A link can be from an allowed outlet (say, a real local paper) and STILL be a
+# bad pin — because the ARTICLE ITSELF is critical of the Senator. Routing a
+# constituent from a proud accomplishment to a story that undercuts it hurts the
+# map. Example that prompted this: a local-news piece on bike lanes Becker backed,
+# headlined "...few appear to use them yet" — an allowed outlet, a negative frame.
+#
+# HONEST LIMITATION: this is a static script. It cannot read a web page or judge
+# tone the way a person can. It scans the SOURCE ARTICLE'S HEADLINE/TITLE (which
+# the person adding the pin passes in) for wording that reads as critical. It's a
+# backstop that catches the obvious cases; the real safeguard is still a human
+# reading the source before citing it. Treat a hit as "do not use this source."
+SOURCE_CRITICAL_TERMS = [
+    "few appear to use", "appear to use them", "hardly used", "barely used",
+    "sparsely used", "little used", "little-used", "underused", "under-used",
+    "no one uses", "nobody uses", "empty bike lane", "not effective",
+    "ineffective", "waste of money", "wasteful", "boondoggle", "criticized",
+    "criticism", "slammed", "blasted", "backlash", "under fire", "disappointing",
+    "fails to", "failed to", "falls short", "questioned whether", "controversial",
+    "controversy", "opposes", "opposed by", "protest",
+]
+
+
+def check_source_stance(headline):
+    """
+    Scan a SOURCE article's headline/title for wording that reads as critical of
+    the Senator or his work.
+
+    Returns (ok, hits):
+        ok   -> True only when no critical wording is found
+        hits -> the critical phrases spotted (for a plain-English explanation)
+
+    Pass the actual headline of the page you're citing. Empty/blank input is
+    treated as "ok" (nothing to check) — but that means nobody vetted the frame,
+    so add.py still nudges you to look.
+    """
+    if not headline or not headline.strip():
+        return (True, [])
+    lower = headline.lower()
+    hits = [term for term in SOURCE_CRITICAL_TERMS if term in lower]
+    return (len(hits) == 0, sorted(set(hits)))
+
+
 def split_sentences(text):
     """
     Break text into rough sentences on . ! ? — good enough for a length check.
@@ -383,6 +429,16 @@ def self_test():
     ok, warnings = check_language(run_on)
     check("summary with 'failed' + run-on has warnings", (not ok) and len(warnings) >= 1)
 
+    # --- Source-stance checks ---
+    ok, hits = check_source_stance("Palo Alto's new bike lanes open, but few appear to use them yet")
+    check("critical headline ('few appear to use') is flagged", (not ok) and len(hits) >= 1)
+
+    ok, hits = check_source_stance("Senator Becker secures $2 million for Half Moon Bay farmworker housing")
+    check("neutral/positive headline is clean", ok and hits == [])
+
+    ok, hits = check_source_stance("")
+    check("blank headline is treated as clean (nothing to check)", ok and hits == [])
+
     print(f"\nResult: {passed} passed, {failed} failed.")
     return failed == 0
 
@@ -399,10 +455,19 @@ def main(argv):
         print_source_verdict(argv[1])
     elif argv[0] == "--text" and len(argv) >= 2:
         print_language_verdict(argv[1])
+    elif argv[0] == "--source-title" and len(argv) >= 2:
+        ok, hits = check_source_stance(argv[1])
+        print(f"HEADLINE: {argv[1]}")
+        if ok:
+            print("          Reads neutral — no critical wording spotted.")
+        else:
+            print(f"  FLAG    Critical wording ({', '.join(hits)}) — this source "
+                  "appears critical of the Senator. Don't route constituents to it.")
     else:
         print("Usage:")
         print('  python3 scripts/content_guard.py --url "<url>"')
         print('  python3 scripts/content_guard.py --text "<text>"')
+        print('  python3 scripts/content_guard.py --source-title "<headline>"')
         print("  python3 scripts/content_guard.py            (self-test)")
 
 
