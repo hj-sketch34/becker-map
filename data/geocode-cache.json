@@ -1,0 +1,83 @@
+{
+  "555 Kelly Avenue, Half Moon Bay, CA, USA": {
+    "lat": "37.4645093",
+    "lon": "-122.4384145"
+  },
+  "1012 Main Street, Redwood City, CA, USA": {
+    "lat": "37.4839330",
+    "lon": "-122.2264025"
+  },
+  "Newell Road, Palo Alto, CA, USA": {
+    "lat": "37.4413740",
+    "lon": "-122.1371140"
+  },
+  "Domini Hoskins Black History Museum, Redwood City, CA, USA": null,
+  "Redwood City, CA, USA": {
+    "lat": "37.4863239",
+    "lon": "-122.2325230"
+  },
+  "Community Services Agency (CSA) of Mountain View, Mountain View, CA, USA": null,
+  "Mountain View, CA, USA": {
+    "lat": "37.3893889",
+    "lon": "-122.0832101"
+  },
+  "City of Menlo Park electrification program, Menlo Park, CA, USA": null,
+  "Menlo Park, CA, USA": {
+    "lat": "37.4519671",
+    "lon": "-122.1779920"
+  },
+  "City of South San Francisco, South San Francisco, CA, USA": {
+    "lat": "37.6547",
+    "lon": "-122.4197"
+  },
+  "San Mateo County Union Community Alliance, San Mateo, CA, USA": null,
+  "San Mateo, CA, USA": {
+    "lat": "37.4969040",
+    "lon": "-122.3330573"
+  },
+  "2535 Pulgas Avenue, East Palo Alto, CA, USA": {
+    "lat": "37.4741170",
+    "lon": "-122.1319906"
+  },
+  "2100 Beach Boulevard, Pacifica, CA, USA": {
+    "lat": "37.6333703",
+    "lon": "-122.4944410"
+  },
+  "Alta Housing North Fair Oaks Senior Housing Project, Redwood City, CA, USA": null,
+  "Bayside Manor and Marina Vista Park, Millbrae, CA, USA": null,
+  "Millbrae, CA, USA": {
+    "lat": "37.5989580",
+    "lon": "-122.4009410"
+  },
+  "3921 Fabian Way, Palo Alto, CA, USA": {
+    "lat": "37.4236389",
+    "lon": "-122.1034627"
+  },
+  "Redwood City Together (PACE program), Redwood City, CA, USA": null,
+  "Redwood City mobile home park flood protection (with OneShoreline), Redwood City, CA, USA": null,
+  "City of Burlingame wastewater reclamation project, Burlingame, CA, USA": null,
+  "Burlingame, CA, USA": {
+    "lat": "37.5780965",
+    "lon": "-122.3473099"
+  },
+  "City of Los Altos / GreenTown Los Altos, Los Altos, CA, USA": null,
+  "Los Altos, CA, USA": {
+    "lat": "37.3790629",
+    "lon": "-122.1165780"
+  },
+  "Broadway & California Drive, Burlingame, CA, USA": {
+    "lat": "37.5871842",
+    "lon": "-122.3619067"
+  },
+  "Mountain View Caltrain Grade Separation Project, Mountain View, CA, USA": null,
+  "Connecting Palo Alto Rail Grade Separation Project, Palo Alto, CA, USA": null,
+  "Palo Alto, CA, USA": {
+    "lat": "37.4443293",
+    "lon": "-122.1598465"
+  },
+  "East Palo Alto regulation football field, East Palo Alto, CA, USA": null,
+  "East Palo Alto, CA, USA": {
+    "lat": "37.4688273",
+    "lon": "-122.1410750"
+  }
+}

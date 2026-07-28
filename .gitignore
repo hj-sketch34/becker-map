@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Internal working files — kept local, not published to the public repo
+notes/
+data/candidates.csv
+data/raw-press-releases.json
+data/release-bodies.json
