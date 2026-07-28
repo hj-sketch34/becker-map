@@ -24,7 +24,7 @@
     },
     {
       "title": "200 laptops distributed to East Palo Alto students to close the digital divide",
-      "category": "education",
+      "category": "service",
       "year": "2025",
       "location_name": "East Palo Alto laptop distribution (with AT&T, StreetCode Academy, Human-I-T)",
       "city": "East Palo Alto",
@@ -46,7 +46,7 @@
     },
     {
       "title": "Launched emergency food drive for families facing SNAP loss",
-      "category": "recognition",
+      "category": "service",
       "year": "2025",
       "location_name": "Senator Josh Becker District Office",
       "city": "Menlo Park",
@@ -222,7 +222,7 @@
     },
     {
       "title": "Spoke at the groundbreaking for LifeMoves transitional housing in the Baylands",
-      "category": "recognition",
+      "category": "service",
       "year": "2023",
       "location_name": "LifeMoves modular transitional housing",
       "city": "Palo Alto",
@@ -1023,6 +1023,7 @@
     "infrastructure": "#455a64",
     "tech": "#00695c",
     "legislation": "#757575",
-    "recognition": "#ad1457"
+    "recognition": "#ad1457",
+    "service": "#3949ab"
   }
 }

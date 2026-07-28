@@ -33,7 +33,7 @@ Typical use (Claude fills these in after reading the link you gave it):
 
 The allowed categories (never invent a new one — ask Huck first):
   environment, energy, housing, education, health, transportation, jobs,
-  public-safety, infrastructure, tech, legislation, community
+  public-safety, infrastructure, tech, legislation, recognition, service
 
 Before it adds anything, this script now runs three guardrails so a bad pin
 never reaches the map:
@@ -72,11 +72,15 @@ SCRIPTS = ROOT / "scripts"
 ALLOWED_CATEGORIES = {
     "environment", "energy", "housing", "education", "health", "transportation",
     "jobs", "public-safety", "infrastructure", "tech", "legislation",
-    "recognition",  # shows of support / appreciation — ribbon-cuttings, food
-                    # drives, and "___ of the Year" awards. Kept SEPARATE from
-                    # the funding/legislative categories on purpose, so honoring
-                    # a local business doesn't sit in the same bucket as a big
-                    # legislative win. (Replaced the old "community" category.)
+    "recognition",  # pure honors — "___ of the Year" awards and shows of
+                    # appreciation where Becker ONLY conferred recognition or
+                    # simply showed up. Kept SEPARATE from the funding/legislative
+                    # categories so honoring a local business doesn't sit in the
+                    # same bucket as a big legislative win. (Replaced old "community".)
+    "service",      # Becker DID something at/for a community event — handed out
+                    # food or laptops, volunteered, spoke, or otherwise actively
+                    # participated. The dividing line vs. recognition: if he did
+                    # more than confer an honor or passively attend, it's service.
 }
 
 # The columns the database uses. accomplishments.csv has no 'place_hints' column

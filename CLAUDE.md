@@ -20,7 +20,7 @@ The builder. Huck supplies the real-world knowledge (which accomplishments are r
 
 Related: **don't overstate.** "Co-sponsored the bill that funded it" and "built it" are different things. Write what's true. Huck decides the wording — he knows the politics; you flag when a phrasing is doing more work than the source supports.
 
-**Two kinds of pins.** A pin is either a **concrete accomplishment** (funding, legislation, a project he delivered) *or* a **show of support** — an in-person, sourced action where the senator showed up and materially helped a community in the district (e.g., he helped distribute food to underpaid farm workers in Pescadero). Shows of support use the `community` category. Both kinds follow the same rules: a real source link, inside District 13, past-tense only, no overstating. A show of support is still a *past* event — never an upcoming appearance.
+**Two kinds of pins.** A pin is either a **concrete accomplishment** (funding, legislation, a project he delivered) *or* a **show of support** — an in-person, sourced action in the district. Shows of support split into two categories: **`service`** when the senator *did* something at the event (handed out food or laptops, volunteered, spoke, actively participated — e.g., he helped distribute food to underpaid farm workers in Pescadero), and **`recognition`** when he purely conferred an honor or simply showed up (a "___ of the Year" award). The line: if he did more than confer recognition or passively attend, it's `service`. Both kinds follow the same rules: a real source link, inside District 13, past-tense only, no overstating. A show of support is still a *past* event — never an upcoming appearance.
 
 ## Build order
 
@@ -30,7 +30,7 @@ Related: **don't overstate.** "Co-sponsored the bill that funded it" and "built 
 title, category, year, location_name, address, city, latitude, longitude, summary, source_url
 ```
 
-- `category` — a small fixed list: environment, energy, housing, education, health, transportation, jobs, public-safety, infrastructure, tech, legislation, community. This is what lets you color the pins and add filters later. Keep the list short and stable. Most categories are concrete accomplishments; `community` is for *shows of support* (see the second thing, below).
+- `category` — a small fixed list: environment, energy, housing, education, health, transportation, jobs, public-safety, infrastructure, tech, legislation, recognition, service. This is what lets you color the pins and add filters later. Keep the list short and stable. Most categories are concrete accomplishments; `recognition` and `service` are the two *shows of support* buckets (see the second thing, below).
 - `year` — when it happened. Just a year is fine; a full date is better when known.
 - `summary` — 2–3 plain sentences a normal person understands. This is the text in the popup. It's the whole product.
 - `latitude` / `longitude` — filled in during Step 3, left blank at first.
@@ -65,6 +65,6 @@ If Huck pastes a press release, a bill summary, a news article, or an email abou
 - **Source links must be trustworthy.** Only an official government site (`*.gov` / `senate.ca.gov`), Becker's official accounts/office, or a reputable local news outlet — nothing else. `scripts/content_guard.py` checks this automatically.
 - **Pins must sit inside District 13.** A pin's coordinates have to fall inside the SD13 boundary. `scripts/geo_guard.py` verifies every lat/lon against the district shape (a pin once landed in San Francisco, which is outside SD13). Out-of-district coordinates get fixed, not published.
 - **Language stays professional and neutral.** Every summary should be plain, easy to read, and factual — and must **never** speak negatively or controversially about the senator. `content_guard.py` also lints the wording for this.
-- **Never invent a category.** The allowed list is environment, energy, housing, education, health, transportation, jobs, public-safety, infrastructure, tech, legislation, community. If an accomplishment doesn't fit one, stop and ask Huck — he decides whether to bend it into an existing one or add a new one. Don't quietly create a new category or force a bad fit.
+- **Never invent a category.** The allowed list is environment, energy, housing, education, health, transportation, jobs, public-safety, infrastructure, tech, legislation, recognition, service. If an accomplishment doesn't fit one, stop and ask Huck — he decides whether to bend it into an existing one or add a new one. Don't quietly create a new category or force a bad fit.
 - **No upcoming events, no future locations.** That's the thing this project deliberately isn't. (Shows of support are *past* events only.)
 - Accuracy over volume. Ten sourced pins beat fifty vague ones.

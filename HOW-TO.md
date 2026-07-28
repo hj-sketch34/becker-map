@@ -38,9 +38,10 @@ map file. Refresh the browser and the pin is there.
 
 The rules still apply. A pin can be **either** a concrete accomplishment (funding,
 legislation, a project) **or** a show of support — the senator showing up in person
-and helping a community here (category `community`). Either way: no pin without a
-source link, don't overstate, District 13 places only (coordinates inside SD13),
-past accomplishments only.
+in the district (category `service` if he actively did something — handed out food,
+volunteered, spoke; category `recognition` if he purely gave an honor or just showed
+up). Either way: no pin without a source link, don't overstate, District 13 places
+only (coordinates inside SD13), past accomplishments only.
 
 ## The full pipeline (how a big batch gets found and added)
 
@@ -71,13 +72,15 @@ anything already seen).
 ## The rules that never change
 
 - A pin is either a concrete accomplishment (funding, legislation, a project) or a
-  show of support — the senator showing up in person and materially helping a
-  district community (category `community`). Same rules either way.
+  show of support — the senator showing up in person in a district community
+  (category `service` if he actively participated, `recognition` if he purely
+  conferred an honor or just attended). Same rules either way.
 - No pin without a source link. Source links must point to an official government
   site (`*.gov` / `senate.ca.gov`), Becker's official accounts/office, or a
   reputable local news outlet — nothing else. `scripts/content_guard.py` checks this.
 - Real category only: environment, energy, housing, education, health,
-  transportation, jobs, public-safety, infrastructure, tech, legislation, community.
+  transportation, jobs, public-safety, infrastructure, tech, legislation,
+  recognition, service.
 - Coordinates must fall inside SD13. `scripts/geo_guard.py` verifies every lat/lon
   against the district shape — fix out-of-district pins, don't publish them (one
   once landed in San Francisco, outside the district).
