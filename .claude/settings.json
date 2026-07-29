@@ -1,3 +1,0 @@
-{
-  "_comment": "The auto-publish Stop hook was REMOVED on 2026-07-29 at Huck's request. Workflow is now explicit: Claude edits the LOCAL site only, and nothing reaches GitHub until Huck says 'publish'. Publishing goes through ./publish.sh, which runs scripts/verify_sync.sh to prove the live site is a byte-exact copy of local. The old hook script still exists at scripts/auto_publish_hook.sh if it is ever wanted back."
-}

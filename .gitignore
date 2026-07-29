@@ -1,3 +1,17 @@
+# The public repo holds ONLY the finished website.
+#
+# Huck's rule (2026-07-29): GitHub should contain the finished project code and
+# nothing else — no build pipeline, no source data, no working notes, no docs.
+# Everything listed below stays on the local machine only.
+#
+# What IS published, deliberately:
+#   site/                the finished map — this is the product
+#   .github/workflows/   the Pages deploy; without it nothing goes live
+#   .gitignore           this file
+#
+# WARNING: everything below now exists ONLY on this Mac and is not backed up
+# anywhere. Losing the machine loses the build pipeline and the pin database.
+
 # macOS
 .DS_Store
 
@@ -5,8 +19,15 @@
 __pycache__/
 *.pyc
 
-# Internal working files — kept local, not published to the public repo
+# --- build pipeline & source data (local only) ---
+scripts/
+data/
+publish.sh
+
+# --- project docs & working notes (local only) ---
 notes/
-data/candidates.csv
-data/raw-press-releases.json
-data/release-bodies.json
+CLAUDE.md
+HOW-TO.md
+todo.md
+done.md
+.claude/
