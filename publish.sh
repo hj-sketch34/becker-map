@@ -47,7 +47,8 @@ fi
 
 git push
 
-repo="$(git config --get remote.origin.url | sed -E 's#.*[:/]([^/]+/[^/]+)(\.git)?$#\1#')"
+# Strip a trailing .git first, then take the last two path segments (owner/repo).
+repo="$(git config --get remote.origin.url | sed -E 's#\.git$##' | sed -E 's#.*[:/]([^/]+/[^/]+)$#\1#')"
 echo
 echo "Pushed. Deploy: https://github.com/$repo/actions"
 echo "Waiting for the live site to catch up, then verifying it is an exact copy…"
