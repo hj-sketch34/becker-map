@@ -101,5 +101,107 @@
   "Martin Elementary School, South San Francisco, CA, USA": {
     "lat": "37.6635446",
     "lon": "-122.4094163"
+  },
+  "Burlingame Community Center, Burlingame, CA, USA": {
+    "lat": "37.5819425",
+    "lon": "-122.3428703"
+  },
+  "Chit Chat Cafe, Pacifica, CA, USA": {
+    "lat": "37.6496124",
+    "lon": "-122.4927407"
+  },
+  "500 County Center, Redwood City, CA, USA": null,
+  "55 W 3rd Ave, San Mateo, CA, USA": {
+    "lat": "37.5619348",
+    "lon": "-122.3269518"
+  },
+  "1017 Middlefield Rd, Redwood City, CA, USA": {
+    "lat": "37.4848284",
+    "lon": "-122.2273483"
+  },
+  "201 S Rengstorff Ave, Mountain View, CA, USA": {
+    "lat": "37.4009050",
+    "lon": "-122.0977819"
+  },
+  "3525 Alameda de las Pulgas, Menlo Park, CA, USA": {
+    "lat": "37.4326279",
+    "lon": "-122.2025317"
+  },
+  "504 San Bruno Ave W, San Bruno, CA, USA": {
+    "lat": "37.6293937",
+    "lon": "-122.4153535"
+  },
+  "250 Hamilton Ave, Palo Alto, CA, USA": {
+    "lat": "37.4441997",
+    "lon": "-122.1596747"
+  },
+  "504 Main St, Half Moon Bay, CA, USA": {
+    "lat": "37.4634889",
+    "lon": "-122.4293587"
+  },
+  "1044 Middlefield Rd, Redwood City, CA, USA": {
+    "lat": "37.4842137",
+    "lon": "-122.2268122"
+  },
+  "225 Cabrillo Hwy S, Half Moon Bay, CA, USA": {
+    "lat": "37.4658961",
+    "lon": "-122.4334399"
+  },
+  "400 California Ave, Palo Alto, CA, USA": {
+    "lat": "37.4336500",
+    "lon": "-122.1386200"
+  },
+  "1012 Main St, Redwood City, CA, USA": {
+    "lat": "37.4839330",
+    "lon": "-122.2264025"
+  },
+  "Fair Oaks Community School, Redwood City, CA, USA": null,
+  "Newell Rd, Palo Alto, CA, USA": {
+    "lat": "37.4413740",
+    "lon": "-122.1371140"
+  },
+  "Belle Haven neighborhood, Menlo Park, CA, USA": {
+    "lat": "37.4797923",
+    "lon": "-122.1521431"
+  },
+  "555 Kelly Ave, Half Moon Bay, CA, USA": {
+    "lat": "37.4641827",
+    "lon": "-122.4349505"
+  },
+  "JobTrain Center for Economic Mobility, East Palo Alto, CA, USA": null,
+  "Lot 12 affordable housing project, Mountain View, CA, USA": null,
+  "Evelyn Ave, Sunnyvale, CA, USA": {
+    "lat": "37.3831638",
+    "lon": "-122.0450605"
+  },
+  "North Fair Oaks senior housing project, Redwood City, CA, USA": null,
+  "Bayside Manor Park, Millbrae, CA, USA": {
+    "lat": "37.6047501",
+    "lon": "-122.3868766"
+  },
+  "Redwood City Together, Redwood City, CA, USA": null,
+  "City of Burlingame wastewater reclamation, Burlingame, CA, USA": null,
+  "City of Los Altos (with GreenTown Los Altos), Los Altos, CA, USA": null,
+  "City of South San Francisco job training programs, South San Francisco, CA, USA": null,
+  "South San Francisco, CA, USA": {
+    "lat": "37.6535403",
+    "lon": "-122.4168664"
+  },
+  "Broadway, Burlingame, CA, USA": {
+    "lat": "37.5871842",
+    "lon": "-122.3619067"
+  },
+  "3401 CSM Dr, San Mateo, CA, USA": {
+    "lat": "37.5306980",
+    "lon": "-122.3380570"
+  },
+  "City of Belmont, Belmont, CA, USA": {
+    "lat": "37.5255342",
+    "lon": "-122.2662895"
+  },
+  "Highway 92 summit, Half Moon Bay, CA, USA": null,
+  "Half Moon Bay, CA, USA": {
+    "lat": "37.4635519",
+    "lon": "-122.4285860"
   }
 }

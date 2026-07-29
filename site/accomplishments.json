@@ -1,6 +1,39 @@
 {
   "pins": [
     {
+      "title": "District office hosted a Senior Scam Stopper seminar at the Redwood City Public Library",
+      "category": "service",
+      "year": "2026",
+      "location_name": "Redwood City Public Library",
+      "city": "Redwood City",
+      "summary": "Senator Becker's office hosted an in-person Senior Scam Stopper seminar in the community room of the Redwood City Public Library. Speakers from the California Department of Insurance, the Department of Financial Protection and Innovation, the California Privacy Protection Agency, and the Contractors State License Board covered insurance fraud, identity theft, phone scams, and repair scams. The seminar was aimed at helping older residents recognize and avoid common scams.",
+      "source_url": "https://sd13.senate.ca.gov/event/senior-scam-stopper-seminar-0",
+      "lat": 37.4842137,
+      "lon": -122.2268122
+    },
+    {
+      "title": "District office staffed a constituent help table at the Coastside Farmers' Market",
+      "category": "service",
+      "year": "2026",
+      "location_name": "Coastside Farmers' Market, Shoreline Station",
+      "city": "Half Moon Bay",
+      "summary": "Senator Becker's district office staff set up a constituent help table at the Coastside Farmers' Market at Shoreline Station in Half Moon Bay. Staff answered questions and helped residents navigate state programs and resolve issues with state agencies. It was one stop in a series of farmers' market visits across the district.",
+      "source_url": "https://sd13.senate.ca.gov/event/coastside-farmers-market-half-moon-bay",
+      "lat": 37.4658961,
+      "lon": -122.4334399
+    },
+    {
+      "title": "District office staffed a constituent help table at the California Avenue Farmers' Market",
+      "category": "service",
+      "year": "2026",
+      "location_name": "California Avenue Farmers' Market",
+      "city": "Palo Alto",
+      "summary": "Senator Becker's district office staff set up a constituent help table at the California Avenue Farmers' Market in Palo Alto. Staff answered constituent questions and helped residents connect with state programs and agencies. It was one stop in a series of farmers' market visits across the district.",
+      "source_url": "https://sd13.senate.ca.gov/event/california-ave-farmers-market-in-palo-alto",
+      "lat": 37.43365,
+      "lon": -122.13862
+    },
+    {
       "title": "$1.5 million secured to renovate the Community Services Agency's Mountain View headquarters",
       "category": "infrastructure",
       "year": "2025",
@@ -67,6 +100,50 @@
       "lon": -122.0832101
     },
     {
+      "title": "Held a community coffee with residents at the Burlingame Community Center",
+      "category": "service",
+      "year": "2025",
+      "location_name": "Burlingame Community Center",
+      "city": "Burlingame",
+      "summary": "Senator Becker held a \"Java with Josh\" community coffee at the Burlingame Community Center, joined by Burlingame Mayor Peter Stevenson. The informal event gave residents a chance to hear what he was working on in the Legislature and raise local concerns directly. It was one in a series of community coffees he held around the Peninsula.",
+      "source_url": "https://sd13.senate.ca.gov/event/java-josh-in-burlingame",
+      "lat": 37.5819425,
+      "lon": -122.3428703
+    },
+    {
+      "title": "Held a community coffee with residents at Chit Chat Cafe in Pacifica",
+      "category": "service",
+      "year": "2025",
+      "location_name": "Chit Chat Cafe",
+      "city": "Pacifica",
+      "summary": "Senator Becker held a \"Java with Josh\" community coffee at Chit Chat Cafe in Pacifica, joined by Pacifica Mayor Sue Beckmeyer. Residents were invited to hear about his legislative work and share what was on their minds. It was part of a series of community coffees held across the district.",
+      "source_url": "https://sd13.senate.ca.gov/event/java-josh-in-pacifica",
+      "lat": 37.6496124,
+      "lon": -122.4927407
+    },
+    {
+      "title": "Joined local leaders in Redwood City at a public event supporting public schools",
+      "category": "service",
+      "year": "2025",
+      "location_name": "500 County Center",
+      "city": "Redwood City",
+      "summary": "Senator Becker joined Congressman Kevin Mullin, other elected officials, and education leaders at 500 County Center in Redwood City for a public event supporting local public education. The event was organized around the federal order to close the U.S. Department of Education and what it could mean for California students. Attendees were invited to share concerns about special education, school meals, civil rights protections, and student loans.",
+      "source_url": "https://sd13.senate.ca.gov/event/stand-and-speak-out-our-schools",
+      "lat": 37.4863239,
+      "lon": -122.232523
+    },
+    {
+      "title": "Called on Caltrans to fix a hazardous wet stretch near the Highway 92 summit",
+      "category": "public-safety",
+      "year": "2025",
+      "location_name": "Highway 92 summit",
+      "city": "Half Moon Bay",
+      "summary": "Senator Becker, Assemblymember Marc Berman and Supervisor Ray Mueller publicly called on Caltrans to address a hazardous stretch near the Highway 92 summit, where a natural spring wets the pavement. Caltrans reported in May 2025 that it had diverted the water and installed warning signs. The officials said a permanent fix was still needed.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/may-12-2025/senator-josh-becker-assemblymember-marc-berman-and-supervisor-ray",
+      "lat": 37.4635519,
+      "lon": -122.428586
+    },
+    {
       "title": "$2 million secured for a permanent Black History Museum",
       "category": "education",
       "year": "2024",
@@ -131,6 +208,61 @@
       "source_url": "https://sd13.senate.ca.gov/news/newsletters/june-27-2024/create-change-june-2024",
       "lat": 37.3861,
       "lon": -122.0839
+    },
+    {
+      "title": "Hosted a Senior Scam Stopper seminar at the San Mateo Main Library",
+      "category": "service",
+      "year": "2024",
+      "location_name": "San Mateo Main Library",
+      "city": "San Mateo",
+      "summary": "Senator Becker and Assemblymember Diane Papan hosted a Senior Scam Stopper seminar in the Oak Room of the San Mateo Main Library. Speakers from the San Mateo Police Department, the Health Insurance Counseling and Advocacy Program of San Mateo, and the Contractors State License Board covered internet scams, Medicare fraud, and home improvement schemes. The seminar walked seniors through how to spot these scams and what to check before hiring a contractor.",
+      "source_url": "https://sd13.senate.ca.gov/event/senior-scam-stopper-seminar",
+      "lat": 37.5619348,
+      "lon": -122.3269518
+    },
+    {
+      "title": "Held a community coffee with residents at Redwood City City Hall",
+      "category": "service",
+      "year": "2024",
+      "location_name": "Redwood City City Hall",
+      "city": "Redwood City",
+      "summary": "Senator Becker held a \"Java with Josh\" community coffee at Redwood City City Hall, joined by Redwood City Mayor Jeff Gee. The informal gathering was part of a Peninsula-wide series where residents could hear about his legislative work and raise local concerns.",
+      "source_url": "https://sd13.senate.ca.gov/event/please-join-me-java-josh-in-redwood-city",
+      "lat": 37.4848284,
+      "lon": -122.2273483
+    },
+    {
+      "title": "Grade separation funding restored for Burlingame's Broadway rail crossing",
+      "category": "transportation",
+      "year": "2024",
+      "location_name": "Broadway Grade Separation Project",
+      "city": "Burlingame",
+      "summary": "After Senator Becker and colleagues pushed back on proposed cuts, the state budget restored $150 million to the Transit and Intercity Rail Capital Program for Peninsula grade separations. The Burlingame Broadway Grade Separation Project was named among the projects meeting the criteria; the release described the crossing as California's most dangerous train crossing. The project is delivered by the city and Caltrain.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-27-2024/millions-in-grade-separation-funding-restored-in-state-budget",
+      "lat": 37.5871842,
+      "lon": -122.3619067
+    },
+    {
+      "title": "Grade separation funding restored for Mountain View's Caltrain crossing",
+      "category": "transportation",
+      "year": "2024",
+      "location_name": "Mountain View Caltrain Grade Separation Project",
+      "city": "Mountain View",
+      "summary": "After Senator Becker and colleagues pushed back on proposed cuts, the state budget restored $150 million to the Transit and Intercity Rail Capital Program for Peninsula grade separations. The City of Mountain View Caltrain Grade Separation Project was named among the projects meeting the criteria. The project is delivered by the city and Caltrain.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-27-2024/millions-in-grade-separation-funding-restored-in-state-budget",
+      "lat": 37.3893889,
+      "lon": -122.0832101
+    },
+    {
+      "title": "Grade separation funding restored for the Connecting Palo Alto rail project",
+      "category": "transportation",
+      "year": "2024",
+      "location_name": "Connecting Palo Alto Rail Grade Separation Project",
+      "city": "Palo Alto",
+      "summary": "After Senator Becker and colleagues pushed back on proposed cuts, the state budget restored $150 million to the Transit and Intercity Rail Capital Program for Peninsula grade separations. The Connecting Palo Alto Rail Grade Separation Project was named among the projects meeting the criteria. The project is delivered by the city and Caltrain.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-27-2024/millions-in-grade-separation-funding-restored-in-state-budget",
+      "lat": 37.4443293,
+      "lon": -122.1598465
     },
     {
       "title": "$2 million secured for farmworker & senior housing in Half Moon Bay",
@@ -243,6 +375,116 @@
       "lon": -122.4286
     },
     {
+      "title": "Convened a community meeting with Caltrans on El Camino Real road repairs",
+      "category": "transportation",
+      "year": "2023",
+      "location_name": "Mountain View Community Center",
+      "city": "Mountain View",
+      "summary": "Senator Becker and Assemblymember Marc Berman convened a community meeting with Caltrans at the Mountain View Community Center on the status of El Camino Real roadway improvements. Caltrans representatives discussed pothole repair and an upcoming pavement rehabilitation project. Staff from Mountain View, Los Altos, and Palo Alto were on hand to answer residents' questions.",
+      "source_url": "https://sd13.senate.ca.gov/event/community-meeting",
+      "lat": 37.400905,
+      "lon": -122.0977819
+    },
+    {
+      "title": "Opened a new District 13 field office in Menlo Park",
+      "category": "service",
+      "year": "2023",
+      "location_name": "Senator Josh Becker District Office",
+      "city": "Menlo Park",
+      "summary": "Senator Becker opened his relocated district office in Menlo Park with a public open house and a ribbon cutting alongside the Chamber San Mateo County. Residents were invited to drop in, see the new office, and meet the staff who handle casework for the district. This remains the district office for Senate District 13.",
+      "source_url": "https://sd13.senate.ca.gov/event/senator-beckers-district-office-open-house",
+      "lat": 37.4326279,
+      "lon": -122.2025317
+    },
+    {
+      "title": "Held a community coffee with residents in San Bruno",
+      "category": "service",
+      "year": "2023",
+      "location_name": "Mazra Mediterranean Restaurant",
+      "city": "San Bruno",
+      "summary": "Senator Becker held a \"Java with Josh\" community coffee at Mazra Mediterranean Restaurant in San Bruno, joined by San Bruno Mayor Rico Medina. The informal gathering was one in a series held around the Peninsula so residents could hear about his legislative work and share local concerns.",
+      "source_url": "https://sd13.senate.ca.gov/event/please-join-me-java-josh-in-san-bruno-216",
+      "lat": 37.6293937,
+      "lon": -122.4153535
+    },
+    {
+      "title": "$2 million secured for senior and farmworker housing on Kelly Avenue in Half Moon Bay",
+      "category": "housing",
+      "year": "2023",
+      "location_name": "Senior and Farmworker Housing project",
+      "city": "Half Moon Bay",
+      "summary": "Senator Becker secured a $2 million state grant for the City of Half Moon Bay to plan and produce affordable housing for farmworkers. The funds support the Senior and Farmworker Housing project at 555 Kelly Avenue — 40 affordable homes plus a farmworker resource center of roughly 2,000 square feet. The project is being developed with Mercy Housing and Ayudando Latinos A Soñar.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/december-21-2023/in-fight-to-provide-farmworker-housing-senator-becker-secures-2",
+      "lat": 37.4641827,
+      "lon": -122.4349505
+    },
+    {
+      "title": "$1 million secured for the Alta Housing North Fair Oaks senior housing project",
+      "category": "housing",
+      "year": "2023",
+      "location_name": "North Fair Oaks senior housing project",
+      "city": "Redwood City",
+      "summary": "Senator Becker secured $1 million in the state budget for pre-development work on the North Fair Oaks Senior Housing Project, developed by Alta Housing. North Fair Oaks is an unincorporated community in San Mateo County next to Redwood City.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-29-2023/legislature-approves-balanced-budget-supports-key-senate-district",
+      "lat": 37.4863239,
+      "lon": -122.232523
+    },
+    {
+      "title": "$300,000 secured for the Bayside Manor and Marina Vista park projects in Millbrae",
+      "category": "infrastructure",
+      "year": "2023",
+      "location_name": "Bayside Manor Park",
+      "city": "Millbrae",
+      "summary": "Senator Becker secured $300,000 in the state budget for the City of Millbrae to support the Bayside Manor and Marina Vista park projects. The funding goes toward city park improvements serving Millbrae residents.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-29-2023/legislature-approves-balanced-budget-supports-key-senate-district",
+      "lat": 37.6047501,
+      "lon": -122.3868766
+    },
+    {
+      "title": "$200,000 secured for Redwood City Together's PACE youth program",
+      "category": "service",
+      "year": "2023",
+      "location_name": "Redwood City Together",
+      "city": "Redwood City",
+      "summary": "Senator Becker secured $200,000 in the state budget for Redwood City and Redwood City Together to support its Purposeful, Action, Creation and Engagement (PACE) program. The program serves local youth and families in Redwood City.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-29-2023/legislature-approves-balanced-budget-supports-key-senate-district",
+      "lat": 37.4863239,
+      "lon": -122.232523
+    },
+    {
+      "title": "$1 million secured to reinforce flood protection for Redwood City mobile home parks",
+      "category": "environment",
+      "year": "2023",
+      "location_name": "Redwood City mobile home park flood protection (with OneShoreline)",
+      "city": "Redwood City",
+      "summary": "Senator Becker secured $1 million in the state budget for Redwood City and OneShoreline to repair and reinforce flood protections for mobile home parks. Mobile home residents are among those most exposed to bayside flooding in the city.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-29-2023/legislature-approves-balanced-budget-supports-key-senate-district",
+      "lat": 37.4863239,
+      "lon": -122.232523
+    },
+    {
+      "title": "$1 million secured for wastewater reclamation in Burlingame",
+      "category": "environment",
+      "year": "2023",
+      "location_name": "City of Burlingame wastewater reclamation",
+      "city": "Burlingame",
+      "summary": "Senator Becker secured $1 million in the state budget for the City of Burlingame to improve the environment by reclaiming wastewater. Reclaimed water can be reused for irrigation and other non-drinking uses, reducing demand on drinking water supplies.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-29-2023/legislature-approves-balanced-budget-supports-key-senate-district",
+      "lat": 37.5780965,
+      "lon": -122.3473099
+    },
+    {
+      "title": "$200,000 secured for green infrastructure and solar streetlights in Los Altos",
+      "category": "energy",
+      "year": "2023",
+      "location_name": "City of Los Altos (with GreenTown Los Altos)",
+      "city": "Los Altos",
+      "summary": "Senator Becker secured $200,000 in the state budget for the City of Los Altos, in partnership with GreenTown Los Altos, for green infrastructure and solar streetlights. The projects support the city's local climate and energy goals.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-29-2023/legislature-approves-balanced-budget-supports-key-senate-district",
+      "lat": 37.3790629,
+      "lon": -122.116578
+    },
+    {
       "title": "$4.45 million secured to convert a parking lot into a downtown park",
       "category": "environment",
       "year": "2022",
@@ -342,6 +584,94 @@
       "lon": -122.3330573
     },
     {
+      "title": "Collected winter coats for East Palo Alto families at a Palo Alto community gathering",
+      "category": "service",
+      "year": "2022",
+      "location_name": "King Plaza, Palo Alto City Hall",
+      "city": "Palo Alto",
+      "summary": "Senator Becker held a community gathering at King Plaza in front of Palo Alto City Hall with Palo Alto Mayor Pat Burt and City Manager Ed Shikada. New and gently used winter coats were collected at the event for a coat drive run with the Ecumenical Hunger Program in East Palo Alto. It was the second consecutive year he partnered with the organization on the drive.",
+      "source_url": "https://sd13.senate.ca.gov/event/join-me-java-josh-in-palo-alto-1119",
+      "lat": 37.4441997,
+      "lon": -122.1596747
+    },
+    {
+      "title": "Held a Coastside community coffee at Mac Dutra Park in Half Moon Bay",
+      "category": "service",
+      "year": "2022",
+      "location_name": "Mac Dutra Park",
+      "city": "Half Moon Bay",
+      "summary": "Senator Becker held an outdoor \"Java with Josh\" community coffee at Mac Dutra Park in Half Moon Bay, focused on the Coastside. Residents were invited to hear about his work in the Legislature and raise local issues. The announcement described the gathering as continuing the tradition of his predecessor's community coffee events.",
+      "source_url": "https://sd13.senate.ca.gov/event/join-me-java-josh-in-half-moon-bay-719",
+      "lat": 37.4634889,
+      "lon": -122.4293587
+    },
+    {
+      "title": "$4.45 million secured to turn a downtown Redwood City parking lot into a public park",
+      "category": "infrastructure",
+      "year": "2022",
+      "location_name": "Downtown Redwood City park site",
+      "city": "Redwood City",
+      "summary": "Senator Becker secured $4.45 million in the state budget to help Redwood City convert the parking lot at 1012 Main Street, next to the public library, into a new downtown park. Plans for the site included a plaza, a children's play space, a water feature, public art, and a lawn and garden area. The same allocation was designated to help build out the Redwood Creek Trail linking downtown to San Francisco Bay.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/november-23-2022/media-advisory-senator-josh-becker-to-present-445-million-check",
+      "lat": 37.483933,
+      "lon": -122.2264025
+    },
+    {
+      "title": "State funding secured to replace the synthetic turf fields at Hawes Park and Fair Oaks School",
+      "category": "infrastructure",
+      "year": "2022",
+      "location_name": "Fair Oaks Community School",
+      "city": "Redwood City",
+      "summary": "As part of a package of Peninsula investments in the state budget, Senator Becker secured funding to help Redwood City replace the synthetic turf fields at Fair Oaks School and Hawes Park. The fields serve neighborhood youth sports and school programs in Redwood City.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-28-2022/legislature-to-vote-more-12-million-in-peninsula-investments",
+      "lat": 37.4863239,
+      "lon": -122.232523
+    },
+    {
+      "title": "$2 million secured to replace Palo Alto's 1911 Newell Road Bridge",
+      "category": "transportation",
+      "year": "2022",
+      "location_name": "Newell Road Bridge over San Francisquito Creek",
+      "city": "Palo Alto",
+      "summary": "Senator Becker secured $2 million in the state budget toward replacing the Newell Road Bridge in Palo Alto, built in 1911 and classified by Caltrans as functionally obsolete. The replacement was designed to be wider and longer, with two traffic lanes and two sidewalks. It was also designed to increase the capacity of San Francisquito Creek, reducing flood risk for downstream communities.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/november-18-2022/senator-josh-becker-to-present-2-million-check-to-palo-alto",
+      "lat": 37.441374,
+      "lon": -122.137114
+    },
+    {
+      "title": "$4.5 million secured for Menlo Park's home electrification program, starting in Belle Haven",
+      "category": "energy",
+      "year": "2022",
+      "location_name": "Belle Haven neighborhood",
+      "city": "Menlo Park",
+      "summary": "Senator Becker secured $4.5 million in the state budget for Menlo Park's municipal electrification program, which helps residents replace fossil-fuel appliances with electric ones. The program was slated to focus first on the Belle Haven neighborhood.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/november-10-2022/senator-josh-becker-to-present-45-million-check-to-menlo-park",
+      "lat": 37.4797923,
+      "lon": -122.1521431
+    },
+    {
+      "title": "$1 million secured for entrepreneurship and job training programs in South San Francisco",
+      "category": "jobs",
+      "year": "2022",
+      "location_name": "City of South San Francisco job training programs",
+      "city": "South San Francisco",
+      "summary": "Senator Becker secured $1 million in the state budget for the City of South San Francisco for programs serving North San Mateo County. The funding supports local entrepreneurship and job training efforts.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/june-28-2022/legislature-to-vote-more-12-million-in-peninsula-investments",
+      "lat": 37.6535403,
+      "lon": -122.4168664
+    },
+    {
+      "title": "Authored SB 893, which let San Mateo County's community colleges go tuition-free",
+      "category": "education",
+      "year": "2022",
+      "location_name": "San Mateo County Community College District",
+      "city": "San Mateo",
+      "summary": "Senator Becker authored SB 893, a pilot that allows the San Mateo County Community College District to use local funds to reduce or eliminate tuition and fees through July 1, 2028. After it was signed, the district's board voted to eliminate tuition, fees, books and educational materials for all students starting January 1, 2023. The district serves roughly 30,000 students across three campuses.",
+      "source_url": "https://sd13.senate.ca.gov/news/press-release/september-30-2022/truly-free-community-college-dream-closer-to-reality-in-the",
+      "lat": 37.530698,
+      "lon": -122.338057
+    },
+    {
       "title": "$5 million secured for JobTrain's Center for Economic Mobility in East Palo Alto",
       "category": "jobs",
       "year": "2021",
@@ -395,6 +725,39 @@
       "source_url": "https://www.mv-voice.com/news/2021/08/25/mountain-view-city-council-scraps-downtown-parking-to-build-120-affordable-apartments/",
       "lat": 37.3897,
       "lon": -122.0817
+    },
+    {
+      "title": "$5 million secured for the JobTrain Center for Economic Mobility in East Palo Alto",
+      "category": "jobs",
+      "year": "2021",
+      "location_name": "JobTrain Center for Economic Mobility",
+      "city": "East Palo Alto",
+      "summary": "Senator Becker supported a state budget that included $5 million for the JobTrain Center for Economic Mobility in East Palo Alto. JobTrain provides job training and placement services for local residents.",
+      "source_url": "https://sd13.senate.ca.gov/news/july-13-2021/senator-becker-cheers-state-budgets-18m-investment-advance-big-lift-jobtrain",
+      "lat": 37.4688273,
+      "lon": -122.141075
+    },
+    {
+      "title": "$8 million secured for Mountain View's 'Lot 12' affordable housing project",
+      "category": "housing",
+      "year": "2021",
+      "location_name": "Lot 12 affordable housing project",
+      "city": "Mountain View",
+      "summary": "Senator Becker supported a state budget that included $8 million for Mountain View's \"Lot 12\" affordable housing project in the downtown area. The project was planned to include roughly 120 affordable homes, with some set aside for rapid rehousing.",
+      "source_url": "https://sd13.senate.ca.gov/news/july-13-2021/senator-becker-cheers-state-budgets-18m-investment-advance-big-lift-jobtrain",
+      "lat": 37.3893889,
+      "lon": -122.0832101
+    },
+    {
+      "title": "Authored SB 640, letting small cities pool state road funds — an idea that started in Belmont",
+      "category": "transportation",
+      "year": "2021",
+      "location_name": "City of Belmont",
+      "city": "Belmont",
+      "summary": "Senator Becker authored SB 640, signed in July 2021, which lets California cities and counties pool state transportation funds for road maintenance projects that benefit neighboring communities. The press release credits Belmont as the city where the idea originated. Burlingame, San Carlos, San Mateo and South San Francisco were also named as cities that could use it.",
+      "source_url": "https://sd13.senate.ca.gov/news/july-16-2021/governor-signs-bill-senator-becker-enable-californias-small-cities-pool-resources",
+      "lat": 37.5255342,
+      "lon": -122.2662895
     }
   ],
   "statewide": [

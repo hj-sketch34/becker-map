@@ -124,6 +124,13 @@ const ICON_PATHS = {
   _default: '<circle cx="12" cy="12" r="7"/>',
 };
 
+// Categories are stored hyphenated ("public-safety") because that's a safe key.
+// For anything a person reads, swap the hyphen for a space so CSS `capitalize`
+// renders "Public Safety" rather than "Public-Safety".
+function prettyCat(category) {
+  return String(category).replace(/-/g, " ");
+}
+
 function catSvg(category) {
   const inner = ICON_PATHS[category] || ICON_PATHS._default;
   return (
@@ -143,16 +150,25 @@ function catSvg(category) {
 map.createPane("maskPane");
 map.getPane("maskPane").style.zIndex = 350; // tiles=200, mask=350, pins(markers)=600
 
-fetch("sd13.geojson")
+// The "?v=" on the data fetches is a cache-buster. A browser caches by URL, so
+// a plain "accomplishments.json" can be served from a stale copy for hours —
+// which is exactly why the live map and localhost once looked like different
+// sites while the files were byte-identical. map.js itself gets stamped the
+// same way by scripts/stamp_assets.py. DATA_V is bumped whenever data changes.
+const DATA_V = "2026-07-29";
+
+fetch("sd13.geojson?v=" + DATA_V)
   .then((response) => response.json())
   .then((geo) => {
     // GeoJSON stores points as [longitude, latitude]; Leaflet wants [lat, lng].
     const district = geo.features[0].geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
 
+    // Gold boundary — the accent color from the senator's official site. It
+    // reads clearly against both the bright district and the dimmed surround.
     const outline = L.polygon(district, {
       pane: "maskPane",
-      color: "#1d4ed8",
-      weight: 2.5,
+      color: "#f2b325",
+      weight: 3,
       fill: false,
       interactive: false,
     }).addTo(map);
@@ -180,8 +196,8 @@ fetch("sd13.geojson")
     L.polygon([outer, district], {
       pane: "maskPane",
       stroke: false,
-      fillColor: "#334155",
-      fillOpacity: 0.45,
+      fillColor: "#07274b", // the official site's deep navy
+      fillOpacity: 0.5,
       interactive: false, // clicks pass through to the map underneath
     }).addTo(map);
   })
@@ -199,7 +215,7 @@ function popupHtml(item, color) {
     <div class="pop-title">${escapeHtml(item.title)}</div>
     <div class="pop-meta">
       ${item.year} &middot; ${escapeHtml(place)}
-      <span class="badge" style="background:${color}">${catSvg(item.category)}${escapeHtml(item.category)}</span>
+      <span class="badge" style="background:${color}">${catSvg(item.category)}${escapeHtml(prettyCat(item.category))}</span>
     </div>
     <div class="pop-summary">${escapeHtml(item.summary)}</div>
     <a class="pop-source" href="${encodeURI(item.source_url)}" target="_blank" rel="noopener">
@@ -207,7 +223,7 @@ function popupHtml(item, color) {
     </a>`;
 }
 
-fetch("accomplishments.json")
+fetch("accomplishments.json?v=" + DATA_V)
   .then((response) => response.json())
   .then((data) => {
     const colors = data.colors || {};
@@ -259,7 +275,7 @@ fetch("accomplishments.json")
       row.type = "button";
       row.innerHTML =
         `<span class="legend-badge" style="background:${colors[category] || "#555"}">${catSvg(category)}</span>` +
-        `<span class="legend-label">${category}</span>` +
+        `<span class="legend-label">${prettyCat(category)}</span>` +
         `<span class="legend-count">${counts[category] || 0}</span>`;
       row.addEventListener("click", () => {
         const g = groups[category];

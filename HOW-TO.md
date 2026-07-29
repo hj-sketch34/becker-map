@@ -11,6 +11,38 @@ python3 -m http.server 8000 --directory site
 Then open **http://localhost:8000** in your browser. Press `Ctrl+C` in the
 terminal to stop the server when you're done.
 
+## Publishing — nothing goes live until you say so
+
+**Changed 2026-07-29.** There used to be an auto-publish hook that pushed to
+GitHub after every Claude turn. It's gone. The flow is now:
+
+1. You ask for a change → Claude edits **localhost only**. Nothing is live yet.
+2. You look at http://localhost:8000 and decide you like it.
+3. You say "publish" → Claude runs `./publish.sh "what changed"`.
+
+`publish.sh` refuses to run from any branch except `main` (GitHub Pages only
+deploys `main` — work on a side branch would silently never go live), commits,
+pushes, waits for the deploy, and then **proves** the live site matches:
+
+```
+./scripts/verify_sync.sh          # check right now
+./scripts/verify_sync.sh --wait   # keep retrying for ~3 min while a deploy lands
+```
+
+It hashes every file in `site/` and compares it to the same file downloaded from
+the live URL. Identical hashes = genuinely a byte-exact copy. This exists because
+on 2026-07-29 the live map and localhost *looked* like different sites (plain
+dots vs. icon pins) while the files were in fact identical — it was browser cache.
+Comparing two browser tabs by eye cannot tell those cases apart; hashing can.
+
+### Why you won't get stale pages any more
+
+`scripts/stamp_assets.py` (run automatically by `publish.sh`) rewrites the script
+tag to `map.js?v=<fingerprint>`, where the fingerprint is a hash of the file's own
+contents. A browser caches by URL, so a changed file gets a new URL and is always
+re-downloaded, while an unchanged file stays cached and fast. Nothing to remember
+to bump.
+
 ## The easy way: add one pin from a link
 
 This is the everyday path. **You give Claude a link about something the senator
