@@ -9,60 +9,164 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+  <!-- Inter: a clean, professional UI typeface (same CDN pattern as Leaflet). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <style>
     :root {
-      --ink: #0f172a;
-      --muted: #64748b;
-      --line: #e5e7eb;
-      --accent: #1d4ed8;
-      --map-bg: #e9eef1;                 /* matches the light basemap so tile gaps don't flash gray */
-      --shadow: 0 1px 3px rgba(15,23,42,.09), 0 1px 2px rgba(15,23,42,.06);
+      --ink: #0f172a;          /* headings / primary text */
+      --ink-soft: #334155;     /* body text */
+      --muted: #64748b;        /* captions, hints */
+      --line: #e6e8ec;         /* hairline borders */
+      --line-soft: #eef1f5;
+      --accent: #1d4ed8;       /* Becker blue */
+      --accent-deep: #1e3a8a;
+      --accent-wash: #eef3ff;  /* pale blue fill */
+      --bg: #f6f7f9;           /* page background behind panels */
+      --panel: #ffffff;
+      --map-bg: #e9eef1;       /* matches the light basemap so tile gaps don't flash gray */
+      --shadow-sm: 0 1px 2px rgba(15,23,42,.06);
+      --shadow: 0 1px 3px rgba(15,23,42,.10), 0 1px 2px rgba(15,23,42,.06);
+      --shadow-lg: 0 10px 30px rgba(15,23,42,.12);
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--ink);
-      background: #fff;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink-soft);
+      background: var(--bg);
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    /* --- header --- */
-    header { padding: 15px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 14px; }
-    header .mark { width: 6px; align-self: stretch; border-radius: 3px; background: linear-gradient(180deg, var(--accent), #3949ab); }
-    header h1 { margin: 0; font-size: 1.25rem; font-weight: 650; letter-spacing: -.01em; }
-    header p { margin: 3px 0 0; color: var(--muted); font-size: .86rem; }
+    /* --- header --------------------------------------------------------- */
+    header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 26px;
+      background:
+        radial-gradient(120% 140% at 0% 0%, #ffffff 0%, #fbfcfe 55%, #f4f7fd 100%);
+      border-bottom: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+    }
+    /* thin colored rule along the very top edge — a subtle "official" touch */
+    header::before {
+      content: "";
+      position: absolute; left: 0; right: 0; top: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent-deep), var(--accent) 45%, #3b82f6 100%);
+    }
+    header .mark {
+      width: 7px; align-self: stretch; min-height: 46px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+    }
+    .head-main { flex: 1; min-width: 0; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--accent-deep);
+      background: var(--accent-wash);
+      padding: 3px 9px; border-radius: 999px;
+      margin-bottom: 7px;
+    }
+    .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    header h1 {
+      margin: 0; color: var(--ink);
+      font-size: 1.32rem; font-weight: 750; letter-spacing: -.015em; line-height: 1.15;
+    }
+    header .lede { margin: 4px 0 0; color: var(--muted); font-size: .87rem; max-width: 62ch; }
 
-    /* --- layout --- */
-    .layout { display: flex; height: calc(100vh - 74px); }
+    /* the running-total chip on the right of the header */
+    .head-stat {
+      flex: none; text-align: right;
+      font-size: .82rem; color: var(--ink-soft); line-height: 1.5;
+      padding: 10px 16px; border: 1px solid var(--line); border-radius: 12px;
+      background: var(--panel); box-shadow: var(--shadow-sm);
+    }
+    .head-stat strong { color: var(--accent-deep); font-weight: 700; }
+    .head-stat .stat-dot { color: #cbd5e1; margin: 0 3px; }
+
+    /* --- layout --------------------------------------------------------- */
+    .layout { display: flex; height: calc(100vh - 84px); }
     #map { flex: 1; background: var(--map-bg); }
     .leaflet-container { background: var(--map-bg); font-family: inherit; }
 
-    aside { width: 312px; border-left: 1px solid var(--line); overflow-y: auto; padding: 18px 16px; background: #fafbfc; }
-    aside h2 { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; font-weight: 700; }
+    aside {
+      width: 336px; flex: none;
+      border-left: 1px solid var(--line);
+      overflow-y: auto;
+      padding: 18px 16px 22px;
+      background: var(--bg);
+    }
+
+    /* sidebar section cards */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow-sm);
+      padding: 14px 14px 12px;
+      margin-bottom: 14px;
+    }
+    .card h2 {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .72rem; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--muted); margin: 0 0 3px; font-weight: 700;
+    }
+    .card h2::before {
+      content: ""; width: 4px; height: 13px; border-radius: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+    }
     .hint { font-size: .74rem; color: var(--muted); margin: 0 0 10px; }
 
     /* --- legend (also a filter: click a row to show/hide that category) --- */
     .legend-row {
-      display: flex; align-items: center; gap: 10px; width: 100%;
-      padding: 6px 8px; margin: 2px 0; border: 0; border-radius: 8px;
+      display: flex; align-items: center; gap: 11px; width: 100%;
+      padding: 7px 8px; margin: 1px 0; border: 0; border-radius: 9px;
       background: transparent; font: inherit; font-size: .9rem; color: var(--ink);
       cursor: pointer; text-align: left; transition: background .12s;
     }
-    .legend-row:hover { background: #eef2f7; }
-    .legend-badge { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #fff; flex: none; box-shadow: var(--shadow); }
+    .legend-row:hover { background: var(--accent-wash); }
+    .legend-badge {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: grid; place-items: center; color: #fff; flex: none;
+      box-shadow: 0 1px 2px rgba(15,23,42,.28), inset 0 0 0 1.5px rgba(255,255,255,.22);
+    }
     .legend-badge svg { width: 14px; height: 14px; }
-    .legend-label { text-transform: capitalize; }
-    .legend-row.off { opacity: .4; }
+    .legend-label { flex: 1; text-transform: capitalize; font-weight: 500; }
+    .legend-count {
+      flex: none; min-width: 24px; text-align: center;
+      font-size: .74rem; font-weight: 700; color: var(--muted);
+      background: var(--line-soft); border-radius: 999px; padding: 2px 8px;
+    }
+    .legend-row:hover .legend-count { color: var(--accent-deep); background: #fff; }
+    .legend-row.off { opacity: .42; }
     .legend-row.off .legend-label { text-decoration: line-through; }
 
-    /* --- statewide list --- */
-    .statewide-item { padding: 11px 2px; border-top: 1px solid var(--line); font-size: .86rem; line-height: 1.4; }
-    .statewide-item a { color: var(--accent); text-decoration: none; }
+    /* --- statewide list ------------------------------------------------- */
+    .statewide-item { padding: 11px 2px; border-top: 1px solid var(--line-soft); font-size: .86rem; line-height: 1.45; }
+    .statewide-item:first-child { border-top: 0; }
+    .statewide-item strong { color: var(--ink); font-weight: 650; }
+    .statewide-item .yr { color: var(--muted); font-weight: 500; }
+    .statewide-item a {
+      display: inline-block; margin-top: 4px;
+      color: var(--accent); text-decoration: none; font-weight: 600; font-size: .8rem;
+    }
+    .statewide-item a:hover { text-decoration: underline; }
     #statewide-empty { color: var(--muted); font-size: .85rem; }
 
-    /* --- pin markers: a colored badge with a white category icon --- */
+    /* --- sidebar footer ------------------------------------------------- */
+    .side-foot {
+      font-size: .72rem; color: var(--muted); line-height: 1.55;
+      padding: 2px 6px; margin-top: 2px;
+    }
+
+    /* --- pin markers: a colored badge with a white category icon -------- */
     .pin-marker { background: transparent; border: 0; }
     .pin-badge {
       width: 30px; height: 30px; border-radius: 50%;
@@ -73,26 +177,45 @@
     .pin-badge svg { width: 16px; height: 16px; }
     .pin-marker:hover .pin-badge { transform: scale(1.18); z-index: 1000; }
 
-    /* --- popup card --- */
-    .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: 0 6px 24px rgba(15,23,42,.16); }
-    .leaflet-popup-content { margin: 14px 16px; }
-    .pop-title { font-weight: 650; font-size: .98rem; line-height: 1.3; margin-bottom: 6px; }
-    .pop-meta { font-size: .76rem; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .pop-summary { font-size: .88rem; line-height: 1.5; }
+    /* --- popup card ----------------------------------------------------- */
+    .leaflet-popup-content-wrapper { border-radius: 14px; box-shadow: var(--shadow-lg); }
+    .leaflet-popup-content { margin: 15px 17px; }
+    .pop-title { color: var(--ink); font-weight: 700; font-size: 1rem; line-height: 1.3; margin-bottom: 7px; }
+    .pop-meta { font-size: .76rem; color: var(--muted); margin-bottom: 9px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .pop-summary { font-size: .88rem; line-height: 1.55; color: var(--ink-soft); }
     .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 20px; color: #fff; font-size: .7rem; font-weight: 600; text-transform: capitalize; }
     .badge svg { width: 11px; height: 11px; }
-    .pop-source { display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; padding: 7px 12px; background: var(--accent); color: #fff; border-radius: 8px; font-size: .8rem; font-weight: 600; text-decoration: none; }
-    .pop-source:hover { background: #1743b8; }
 
-    /* --- the "outside the district" caption --- */
-    .mask-note { background: rgba(255,255,255,.94); padding: 6px 11px; border-radius: 8px; box-shadow: var(--shadow);
-      font-size: .78rem; color: var(--ink); display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); }
-    .mask-swatch { width: 13px; height: 13px; border-radius: 3px; flex: none; background: #334155; opacity: .45; }
+    /* The source button. Note the extra-specific selector: Leaflet ships
+       `.leaflet-container a { color:#0078A8 }`, which is MORE specific than a
+       bare `.pop-source` and was repainting this button's text blue-on-blue
+       (nearly invisible). Qualifying with the popup container out-specifies it. */
+    .leaflet-popup-content a.pop-source,
+    .pop-source {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 13px;
+      padding: 8px 13px; border-radius: 9px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+      color: #ffffff !important; text-decoration: none;
+      font-size: .8rem; font-weight: 600;
+      box-shadow: 0 1px 2px rgba(29,78,216,.35);
+      transition: filter .12s, transform .12s;
+    }
+    .leaflet-popup-content a.pop-source:hover { filter: brightness(1.08); transform: translateY(-1px); text-decoration: none; }
 
-    /* --- small screens: stack the sidebar under the map --- */
-    @media (max-width: 720px) {
+    /* --- Leaflet zoom buttons: match the panel styling ------------------ */
+    .leaflet-bar { border: 0; box-shadow: var(--shadow); border-radius: 10px; overflow: hidden; }
+    .leaflet-bar a {
+      background: var(--panel); color: var(--ink-soft);
+      border-bottom: 1px solid var(--line-soft); font-weight: 600;
+    }
+    .leaflet-bar a:hover { background: var(--accent-wash); color: var(--accent-deep); }
+
+    /* --- small screens: stack the sidebar under the map ----------------- */
+    @media (max-width: 760px) {
+      header { flex-wrap: wrap; gap: 12px; }
+      .head-stat { text-align: left; }
       .layout { flex-direction: column; height: auto; }
-      #map { height: 62vh; }
+      #map { height: 60vh; }
       aside { width: auto; border-left: 0; border-top: 1px solid var(--line); }
     }
   </style>
@@ -100,21 +223,32 @@
 <body>
   <header>
     <div class="mark"></div>
-    <div>
+    <div class="head-main">
+      <span class="eyebrow"><span class="dot"></span>California State Senate · District 13</span>
       <h1>Senator Josh Becker — What He's Done for District 13</h1>
-      <p>A map of funded, sourced accomplishments. Every pin links to the official announcement. Click a pin for the story.</p>
+      <p class="lede">A map of funded, sourced accomplishments. Every pin links to the official announcement — click a pin for the story.</p>
     </div>
+    <div class="head-stat" id="stat">Loading the record…</div>
   </header>
 
   <div class="layout">
     <div id="map"></div>
     <aside>
-      <h2>Categories</h2>
-      <p class="hint">Click a category to show or hide its pins.</p>
-      <div id="legend"></div>
+      <div class="card">
+        <h2>Categories</h2>
+        <p class="hint">Click a category to show or hide its pins.</p>
+        <div id="legend"></div>
+      </div>
 
-      <h2 style="margin-top:22px;">Statewide work</h2>
-      <div id="statewide"></div>
+      <div class="card">
+        <h2>Statewide work</h2>
+        <div id="statewide"></div>
+      </div>
+
+      <p class="side-foot">
+        Every pin is a real action inside District 13, backed by an official source —
+        a bill, a state budget line, or a press release. Accuracy over volume.
+      </p>
     </aside>
   </div>
 

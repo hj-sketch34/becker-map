@@ -75,15 +75,19 @@ L.Map.addInitHook("addHandler", "smoothWheelZoom", L.Map.SmoothWheelZoom);
 // The map itself
 // ---------------------------------------------------------------------------
 // Start centered on the Peninsula (District 13). We turn OFF Leaflet's default
-// stepped wheel zoom and turn ON the smooth one above. zoomSnap/zoomDelta make
-// button + double-click zoom animate in small fractions too, so nothing "jumps."
+// stepped wheel zoom and turn ON the smooth one above.
+//
+// zoomSnap MUST be 0 for smooth zoom to work: the smooth handler sets a new
+// fractional zoom (e.g. 11.03) on every animation frame, but any non-zero
+// zoomSnap rounds each of those back to the nearest step — which is exactly
+// what made the wheel feel stuck/broken before. With zoomSnap:0 the zoom can
+// glide continuously. zoomDelta still controls the +/- buttons & double-click.
 const map = L.map("map", {
   scrollWheelZoom: false,
   smoothWheelZoom: true,
-  smoothSensitivity: 1.3,
-  zoomSnap: 0.25,
-  zoomDelta: 0.5,
-  wheelPxPerZoomLevel: 120,
+  smoothSensitivity: 1,
+  zoomSnap: 0,
+  zoomDelta: 0.6,
   maxBoundsViscosity: 1.0, // hard wall at the pan edge (set the edge itself below)
 }).setView([37.47, -122.20], 11);
 
@@ -104,7 +108,7 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
 // Sized by CSS (.pin-badge / .legend-badge / .badge svg), so no width here.
 // ---------------------------------------------------------------------------
 const ICON_PATHS = {
-  environment: '<path d="M17 14h.35L14 9.5h.7L12 5.5 9.3 9.5h.7L6.65 14H7l-2 3h14z"/><path d="M12 17v4"/>',
+  environment: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>',
   energy: '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
   housing: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
   education: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
@@ -115,7 +119,7 @@ const ICON_PATHS = {
   infrastructure: '<path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M14 6a6 6 0 0 1 6 6v2"/><path d="M4 14v-2a6 6 0 0 1 6-6"/><rect x="2" y="14" width="20" height="5" rx="1"/>',
   tech: '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v2"/><path d="M15 2v2"/><path d="M9 20v2"/><path d="M15 20v2"/><path d="M2 9h2"/><path d="M2 15h2"/><path d="M20 9h2"/><path d="M20 15h2"/>',
   legislation: '<path d="M10 18v-7"/><path d="M11.1 2.2a2 2 0 0 1 1.8 0l7.9 3.85c.47.23.3.95-.23.95H3.44c-.53 0-.7-.72-.22-.95z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/>',
-  recognition: '<circle cx="12" cy="8" r="6"/><path d="M15.48 12.9 17 21.4a.5.5 0 0 1-.8.47l-3.6-2.69a1 1 0 0 0-1.2 0L7.8 21.87a.5.5 0 0 1-.8-.47l1.5-8.52"/>',
+  recognition: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
   service: '<path d="M11 14h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 15 6 6"/><path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.73 2.73 0 0 0 16 4a2.78 2.78 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12z"/>',
   _default: '<circle cx="12" cy="12" r="7"/>',
 };
@@ -161,9 +165,12 @@ fetch("sd13.geojson")
     map.setMaxBounds(panBounds);
     map.setMinZoom(map.getZoom() - 1);
 
-    // The dim mask's outer ring: the pan box grown a bit MORE (0.6) so the dim
-    // always covers the visible area, with no lagging global polygon.
-    const m = outline.getBounds().pad(0.6);
+    // The dim mask's outer ring. This is a static rectangle (not a globe-spanning
+    // polygon, which is what used to cause the gray "lag"), so we can make it
+    // generously large with no performance cost. Grown 2x on each side so its
+    // edges always sit far outside the viewport — even zoomed all the way out on
+    // a wide monitor you never catch the gray running out.
+    const m = outline.getBounds().pad(2.0);
     const outer = [
       [m.getSouth(), m.getWest()],
       [m.getSouth(), m.getEast()],
@@ -177,15 +184,6 @@ fetch("sd13.geojson")
       fillOpacity: 0.45,
       interactive: false, // clicks pass through to the map underneath
     }).addTo(map);
-
-    // Small caption so a first-time visitor knows what the dim area means.
-    const note = L.control({ position: "bottomleft" });
-    note.onAdd = function () {
-      const box = L.DomUtil.create("div", "mask-note");
-      box.innerHTML = '<span class="mask-swatch"></span>Dimmed = outside Senate District 13';
-      return box;
-    };
-    note.addTo(map);
   })
   .catch((error) => console.error("Could not load the SD13 boundary:", error));
 
@@ -214,6 +212,7 @@ fetch("accomplishments.json")
   .then((data) => {
     const colors = data.colors || {};
     const usedCategories = new Set();
+    const counts = {}; // category -> how many pins, shown as a pill in the legend
     const groups = {}; // category -> LayerGroup, so the legend can toggle each one
 
     function groupFor(category) {
@@ -225,6 +224,7 @@ fetch("accomplishments.json")
     data.pins.forEach((item) => {
       const color = colors[item.category] || "#555";
       usedCategories.add(item.category);
+      counts[item.category] = (counts[item.category] || 0) + 1;
 
       const icon = L.divIcon({
         className: "pin-marker",
@@ -239,6 +239,18 @@ fetch("accomplishments.json")
         .addTo(groupFor(item.category));
     });
 
+    // --- header stat line: "N accomplishments · M categories" ---
+    const stat = document.getElementById("stat");
+    if (stat) {
+      const nPins = data.pins.length;
+      const nCats = usedCategories.size;
+      const nState = (data.statewide || []).length;
+      stat.innerHTML =
+        `<strong>${nPins}</strong> mapped accomplishment${nPins === 1 ? "" : "s"}` +
+        ` <span class="stat-dot">&middot;</span> <strong>${nCats}</strong> categor${nCats === 1 ? "y" : "ies"}` +
+        (nState ? ` <span class="stat-dot">&middot;</span> <strong>${nState}</strong> statewide` : "");
+    }
+
     // --- legend / filter (only categories actually on the map) ---
     const legend = document.getElementById("legend");
     [...usedCategories].sort().forEach((category) => {
@@ -247,7 +259,8 @@ fetch("accomplishments.json")
       row.type = "button";
       row.innerHTML =
         `<span class="legend-badge" style="background:${colors[category] || "#555"}">${catSvg(category)}</span>` +
-        `<span class="legend-label">${category}</span>`;
+        `<span class="legend-label">${category}</span>` +
+        `<span class="legend-count">${counts[category] || 0}</span>`;
       row.addEventListener("click", () => {
         const g = groups[category];
         if (!g) return;
@@ -271,8 +284,8 @@ fetch("accomplishments.json")
       data.statewide.forEach((item) => {
         const el = document.createElement("div");
         el.className = "statewide-item";
-        el.innerHTML = `<strong>${escapeHtml(item.title)}</strong> (${item.year})<br>
-          <a href="${encodeURI(item.source_url)}" target="_blank" rel="noopener">source &rarr;</a>`;
+        el.innerHTML = `<strong>${escapeHtml(item.title)}</strong> <span class="yr">(${item.year})</span><br>
+          <a href="${encodeURI(item.source_url)}" target="_blank" rel="noopener">Read the source &rarr;</a>`;
         statewide.appendChild(el);
       });
     }
