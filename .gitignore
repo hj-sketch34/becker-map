@@ -6,6 +6,8 @@
 #
 # What IS published, deliberately:
 #   site/                the finished map — this is the product
+#   site/photos/         pin photos. Published on purpose: the map loads these
+#                        by URL, so an ignore rule here means broken images.
 #   .github/workflows/   the Pages deploy; without it nothing goes live
 #   .gitignore           this file
 #
@@ -28,6 +30,7 @@ publish.sh
 notes/
 CLAUDE.md
 HOW-TO.md
+HANDOFF.md
 todo.md
 done.md
 .claude/

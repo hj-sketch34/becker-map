@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Senator Josh Becker — What He's Done for District 13</title>
+  <meta name="description" content="A map of Senator Josh Becker's funded, sourced accomplishments across California Senate District 13. Every pin links to the official announcement." />
 
   <!-- Leaflet: the free map library. Loaded from its official CDN. -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -37,16 +38,29 @@
       --map-bg:     #e9eef1;
       --shadow:     0 4px 15px rgb(163 163 163 / 50%);  /* the site's card shadow */
       --shadow-sm:  0 1px 3px rgba(7,39,75,.12);
+      --shadow-lg:  0 -6px 30px rgba(7,39,75,.22);
 
       /* The site's signature micro-detail: uppercase + 1.5px tracking,
          Montserrat 600. Used for every small label on the page. */
       --chrome: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       --display: "Playfair Display", Georgia, "Times New Roman", serif;
       --body: "Ovo", Georgia, "Times New Roman", serif;
+
+      /* How much of the mobile bottom sheet peeks up when it's closed.
+         The floating map controls sit above this, so they never hide
+         behind the sheet. On desktop it's 0 — there is no sheet. */
+      --peek: 0px;
     }
 
     * { box-sizing: border-box; }
     html, body { height: 100%; }
+
+    /* The `hidden` attribute means "not shown", full stop. Browsers apply it
+       as display:none from a low-priority stylesheet, so any class of ours
+       that sets `display: flex` silently beats it — which is exactly how the
+       guided-tour bar ended up on screen before a tour had started. This one
+       line makes `hidden` win everywhere. */
+    [hidden] { display: none !important; }
     body {
       margin: 0;
       display: flex; flex-direction: column;
@@ -57,9 +71,33 @@
       text-rendering: optimizeLegibility;
     }
 
+    /* A visible keyboard focus ring everywhere. The map is clickable, but
+       plenty of people navigate with Tab only — this is how they see where
+       they are. */
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* Skip link: first thing a screen reader / keyboard user hits, so they
+       can jump past the map straight to the readable list of pins. */
+    .skip-link {
+      position: absolute; left: -9999px; top: 0; z-index: 3000;
+      background: var(--gold); color: #000; padding: 12px 18px;
+      font-family: var(--chrome); font-size: .8rem; font-weight: 600;
+      text-decoration: none;
+    }
+    .skip-link:focus { left: 8px; top: 8px; }
+
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px;
+      margin: -1px; padding: 0; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+
     /* --- header: the navy bar, mirroring the official site's nav ------- */
     header {
-      position: relative; flex: none;
+      position: relative; flex: none; z-index: 900;
       display: flex; align-items: center; gap: 22px;
       padding: 18px 4%;
       background: var(--navy-deep);
@@ -118,16 +156,229 @@
 
     /* --- layout -------------------------------------------------------- */
     .layout { flex: 1; display: flex; min-height: 0; }
-    #map { flex: 1; background: var(--map-bg); }
+    .map-wrap { flex: 1; position: relative; min-width: 0; }
+    #map { position: absolute; inset: 0; background: var(--map-bg); }
     .leaflet-container { background: var(--map-bg); font-family: var(--body); }
 
+    /* The panel is a fixed frame with a scrolling middle: the grip and the
+       search box stay put while only the tab content scrolls. That's what
+       keeps search reachable at any scroll position — and it's the same
+       structure the mobile sheet needs, so there's only one layout to
+       reason about instead of two. */
     aside {
       width: 348px; flex: none;
       border-left: 1px solid var(--line);
-      overflow-y: auto;
-      padding: 22px 18px 26px;
+      overflow: hidden;
       background: var(--light);
+      display: flex; flex-direction: column;
     }
+    .sheet-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+
+    /* ===================================================================
+       THE HERO — the landing moment.
+       It sits ON TOP of the map rather than above it, so the page keeps
+       its full-screen app feel while the intro flight plays underneath.
+       Dismissed by the button, by Escape, or by touching the map.
+       =================================================================== */
+    /* overflow-y:auto matters more than it looks: the hero is absolutely
+       positioned, so on a short window (a laptop with the footer showing) its
+       content would otherwise spill straight out of the map and print itself
+       over the footer. Now it scrolls inside its own box instead. */
+    .hero {
+      position: absolute; inset: 0; z-index: 800; overflow-y: auto;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5% 7%;
+      background:
+        linear-gradient(105deg, rgba(7,39,75,.94) 0%, rgba(7,39,75,.86) 42%, rgba(7,39,75,.35) 78%, rgba(7,39,75,0) 100%);
+      color: #fff;
+      transition: opacity .7s ease-in-out, visibility .7s;
+    }
+    .hero.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+    .hero-inner { max-width: 33rem; }
+    .hero .eyebrow { margin-bottom: 10px; }
+    .hero h2 {
+      margin: 0 0 14px;
+      font-family: var(--display); font-weight: 700;
+      font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1.14;
+    }
+    .hero p {
+      margin: 0 0 22px; max-width: 44ch;
+      font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,.82);
+    }
+
+    /* The stat strip. Numbers are computed from the data at load time —
+       nothing here is typed in by hand, so it can never drift. */
+    .hero-stats {
+      display: flex; flex-wrap: wrap; gap: 26px 34px; margin-bottom: 26px;
+    }
+    .hero-stat strong {
+      display: block;
+      font-family: var(--display); font-weight: 700;
+      font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.1;
+      color: var(--gold);
+    }
+    .hero-stat span {
+      display: block; margin-top: 4px;
+      font-family: var(--chrome); font-size: .68rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(255,255,255,.62);
+    }
+    /* The honesty line. This map is not finished, and the dollar figure is a
+       floor, not a total — so the page says so out loud instead of implying
+       a completeness it doesn't have. */
+    .hero-caveat {
+      margin: 0 0 24px; max-width: 46ch;
+      font-family: var(--chrome); font-size: .74rem; line-height: 1.6;
+      color: rgba(255,255,255,.6);
+      border-left: 2px solid rgba(242,179,37,.55); padding-left: 12px;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    /* The official site's primary CTA: gold fill, BLACK label, flips to
+       navy + white on hover. */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 20px; border: 1px solid transparent; border-radius: 2px;
+      font-family: var(--chrome); font-size: .78rem; font-weight: 600;
+      letter-spacing: .5px;
+      cursor: pointer; text-decoration: none;
+      transition: background .35s ease-in-out, color .35s ease-in-out, border-color .35s ease-in-out;
+    }
+    .btn svg { width: 15px; height: 15px; flex: none; }
+    .btn-primary { background: var(--gold); color: #000; }
+    .btn-primary:hover { background: var(--navy); color: #fff; }
+    .btn-ghost {
+      background: transparent; color: #fff;
+      border-color: rgba(255,255,255,.4);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.12); border-color: #fff; }
+
+    /* ===================================================================
+       FLOATING MAP CONTROLS — the timeline and the tour bar.
+       Both sit over the bottom of the map, clear of the mobile sheet
+       (that's what --peek is for).
+       =================================================================== */
+    .map-dock {
+      position: absolute; z-index: 700;
+      left: 14px; right: 14px; bottom: calc(var(--peek) + 14px);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      pointer-events: none;  /* the gaps let map drags through */
+    }
+    .map-dock > * { pointer-events: auto; }
+
+    /* While the hero is up, the year scrubber underneath it collides with the
+       hero's own buttons. The dock sits after the hero in the markup, so a
+       sibling selector can simply switch it off until the hero is dismissed. */
+    .hero:not(.gone) ~ .map-dock { display: none; }
+
+    .dock-card {
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    /* --- the year scrubber --------------------------------------------- */
+    .timeline {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 14px;
+      width: min(560px, 100%);
+    }
+    .timeline-label {
+      flex: none; min-width: 8.5rem;
+      font-family: var(--chrome); font-size: .74rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--navy-deep);
+    }
+    .timeline-label b { color: var(--navy); font-weight: 700; }
+    .timeline input[type="range"] {
+      flex: 1; min-width: 0; accent-color: var(--navy); cursor: pointer;
+    }
+    .icon-btn {
+      flex: none; width: 34px; height: 34px;
+      display: grid; place-items: center;
+      border: 1px solid var(--line); border-radius: 2px;
+      background: var(--paper); color: var(--navy-deep);
+      cursor: pointer;
+      transition: background .3s ease-in-out, color .3s ease-in-out, border-color .3s ease-in-out;
+    }
+    .icon-btn svg { width: 15px; height: 15px; }
+    .icon-btn:hover { background: var(--navy); border-color: var(--navy); color: var(--gold); }
+    .icon-btn.on { background: var(--navy); border-color: var(--navy); color: var(--gold); }
+
+    /* --- the guided-tour bar (only visible while a tour is playing) ----- */
+    .tour-bar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 10px 14px;
+      width: min(560px, 100%);
+      background: var(--navy-deep); border-color: var(--navy-deep);
+      color: #fff;
+    }
+    .tour-bar .tour-step {
+      flex: 1; min-width: 0;
+      font-family: var(--chrome); font-size: .74rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,.75);
+    }
+    .tour-bar .tour-step b { color: var(--gold); }
+    .tour-bar .icon-btn {
+      background: transparent; border-color: rgba(255,255,255,.35); color: #fff;
+    }
+    .tour-bar .icon-btn:hover { background: rgba(255,255,255,.15); color: var(--gold); }
+
+    /* ===================================================================
+       THE SIDE PANEL — search, tabs, and the three tab panes.
+       On phones this whole element becomes a draggable bottom sheet.
+       =================================================================== */
+    .panel-grip { display: none; }   /* mobile only — see the media query */
+
+    .panel-search {
+      flex: none;
+      display: flex; gap: 8px; align-items: center;
+      padding: 14px 16px 12px;
+      background: var(--light);
+      border-bottom: 1px solid var(--line);
+    }
+    .search-field { position: relative; flex: 1; min-width: 0; }
+    .search-field svg {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      width: 15px; height: 15px; color: var(--muted); pointer-events: none;
+    }
+    .search-field input {
+      width: 100%; padding: 11px 30px 11px 32px;
+      border: 1px solid var(--line); border-radius: 2px;
+      background: var(--paper); color: var(--ink);
+      font-family: var(--chrome); font-size: .84rem;
+      transition: border-color .3s ease-in-out;
+    }
+    .search-field input:focus { border-color: var(--navy); }
+    .search-clear {
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+      width: 24px; height: 24px; display: none; place-items: center;
+      border: 0; background: transparent; color: var(--muted);
+      font-size: 1.1rem; line-height: 1; cursor: pointer;
+    }
+    .search-field.has-text .search-clear { display: grid; }
+
+    /* --- tabs ---------------------------------------------------------- */
+    .tabs {
+      position: sticky; top: 0; z-index: 4;
+      display: flex; background: var(--light);
+      border-bottom: 1px solid var(--line);
+    }
+    .tab {
+      flex: 1; padding: 12px 6px 10px;
+      border: 0; border-bottom: 3px solid transparent;
+      background: transparent; color: var(--muted);
+      font-family: var(--chrome); font-size: .72rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; white-space: nowrap;
+      transition: color .3s ease-in-out, border-color .3s ease-in-out, background .3s ease-in-out;
+    }
+    .tab:hover { color: var(--navy); background: var(--wash); }
+    .tab[aria-selected="true"] { color: var(--navy-deep); border-bottom-color: var(--gold); }
+
+    .tab-pane { padding: 20px 16px 26px; }
+    .tab-pane[hidden] { display: none; }
 
     /* Sidebar cards use the official site's one "card header" device:
        a thick navy rule across the top of a white panel. */
@@ -180,6 +431,77 @@
     .legend-row.off { opacity: .4; }
     .legend-row.off .legend-label { text-decoration: line-through; }
 
+    /* --- "Show community events" master toggle -------------------------- */
+    /* Community events start hidden so the first thing anyone sees is the
+       money and the laws. They're one click away, under their own heading. */
+    .toggle-btn {
+      display: block; width: 100%;
+      padding: 10px 12px; margin-top: 2px;
+      border: 1px solid var(--line); border-radius: 2px;
+      background: var(--paper); color: var(--navy);
+      font-family: var(--chrome); font-size: .76rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; text-align: left;
+      transition: background .35s ease-in-out, color .35s ease-in-out, border-color .35s ease-in-out;
+    }
+    .toggle-btn:hover { background: var(--wash); border-color: var(--navy); }
+    .toggle-btn.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+    #district-body { margin-top: 10px; }
+
+    /* --- repeat programs, named once instead of listed five times ------- */
+    .program-row {
+      display: flex; align-items: baseline; gap: 8px;
+      padding: 7px 8px; border-top: 1px solid var(--line-soft);
+      font-family: var(--chrome); font-size: .78rem;
+    }
+    #programs { margin-top: 8px; }
+    .program-label { flex: 1; color: var(--ink); }
+    .program-count {
+      flex: none; font-size: .68rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+    }
+
+    /* --- the dollars panel (collapsed until clicked) -------------------- */
+    .card-flush { padding: 0; }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      width: 100%; padding: 16px;
+      border: 0; background: transparent; cursor: pointer;
+      font-family: var(--chrome); font-size: .82rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px; color: var(--navy-deep);
+      transition: background .35s ease-in-out;
+    }
+    .panel-head:hover { background: var(--wash); }
+    /* A plus that becomes a minus when the panel is open. */
+    .chev {
+      flex: none; position: relative; width: 12px; height: 12px;
+    }
+    .chev::before, .chev::after {
+      content: ""; position: absolute; background: var(--navy);
+      left: 0; top: 5px; width: 12px; height: 2px;
+    }
+    .chev::after { transform: rotate(90deg); transition: opacity .25s ease-in-out; }
+    .panel-head.open .chev::after { opacity: 0; }
+    .panel-body { padding: 0 16px 16px; }
+    .dollar-total {
+      font-family: var(--display); font-weight: 700; font-size: 2rem;
+      color: var(--navy-deep); line-height: 1.1;
+    }
+    .dollar-note {
+      font-family: var(--chrome); font-size: .72rem; letter-spacing: .5px;
+      color: var(--muted); margin-top: 4px;
+    }
+    .switch {
+      display: flex; align-items: center; gap: 9px; margin-top: 14px;
+      font-family: var(--chrome); font-size: .78rem; font-weight: 600;
+      color: var(--ink); cursor: pointer;
+    }
+    .switch input { width: 15px; height: 15px; accent-color: var(--navy); cursor: pointer; }
+    .switch-note {
+      margin: 7px 0 0;
+      font-family: var(--chrome); font-size: .7rem; line-height: 1.5; color: var(--muted);
+    }
+
     /* --- statewide list ------------------------------------------------ */
     .statewide-item {
       padding: 13px 2px; border-top: 1px solid var(--line-soft);
@@ -202,23 +524,207 @@
     .statewide-item a:hover { color: var(--gold); }
     #statewide-empty { color: var(--muted); font-size: .88rem; }
 
-    /* --- pin markers: a colored badge with a white category icon -------- */
+    /* ===================================================================
+       THE "ALL PINS" LIST — the readable spine of the whole site.
+       Until now the only way to read a pin was to find and click it on the
+       map, which meant screen readers, keyboard users and search engines
+       got nothing at all. This list carries the same data as the map and
+       stays in sync with every filter.
+       =================================================================== */
+    .list-status {
+      font-family: var(--chrome); font-size: .72rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+      padding: 0 2px 10px;
+    }
+    .pin-row {
+      display: flex; gap: 11px; align-items: flex-start; width: 100%;
+      padding: 12px 10px; border: 0; border-radius: 2px;
+      border-bottom: 1px solid var(--line-soft);
+      background: transparent; text-align: left; cursor: pointer;
+      transition: background .25s ease-in-out;
+    }
+    .pin-row:hover { background: var(--wash); }
+    .pin-row.active { background: var(--wash); box-shadow: inset 3px 0 0 var(--gold); }
+    .pin-row-dot {
+      flex: none; margin-top: 3px;
+      width: 22px; height: 22px; border-radius: 50%;
+      display: grid; place-items: center; color: #fff;
+    }
+    .pin-row-dot svg { width: 12px; height: 12px; }
+    .pin-row-main { flex: 1; min-width: 0; }
+    .pin-row-title {
+      font-family: var(--body); font-size: .89rem; line-height: 1.4; color: var(--ink);
+    }
+    .pin-row-meta {
+      margin-top: 4px;
+      font-family: var(--chrome); font-size: .68rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+      display: flex; flex-wrap: wrap; gap: 7px; align-items: center;
+    }
+    .pin-row-amount {
+      background: var(--gold); color: #000; border-radius: 2px;
+      padding: 1px 6px; font-size: .66rem; font-weight: 700;
+    }
+    .list-empty {
+      padding: 26px 8px; text-align: center;
+      font-family: var(--chrome); font-size: .8rem; color: var(--muted); line-height: 1.6;
+    }
+
+    /* --- the city scoreboard ------------------------------------------- */
+    .city-row {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      padding: 11px 10px; border: 0;
+      border-bottom: 1px solid var(--line-soft);
+      background: transparent; text-align: left; cursor: pointer;
+      font-family: var(--chrome);
+      transition: background .25s ease-in-out;
+    }
+    .city-row:hover { background: var(--wash); }
+    .city-row.active { background: var(--wash); box-shadow: inset 3px 0 0 var(--gold); }
+    .city-name { flex: 1; min-width: 0; font-size: .86rem; font-weight: 600; color: var(--ink); }
+    .city-money {
+      font-size: .7rem; font-weight: 700; letter-spacing: .5px;
+      color: var(--navy-deep); background: var(--wash);
+      border-radius: 2px; padding: 3px 7px;
+    }
+    .city-count {
+      flex: none; min-width: 26px; text-align: center;
+      font-size: .72rem; font-weight: 700;
+      color: #fff; background: var(--navy);
+      border-radius: 2px; padding: 3px 8px;
+    }
+    /* A tiny bar behind each row showing relative pin count — a sparkline
+       you read without noticing it's there. */
+    .city-bar {
+      height: 3px; border-radius: 2px; background: var(--line-soft);
+      margin: 0 10px 0; overflow: hidden;
+    }
+    .city-bar i { display: block; height: 100%; background: var(--gold); }
+
+    /* ===================================================================
+       "WHAT'S NEAR ME?" — the widget that turns a record into something
+       personal. Type an address (or use the phone's GPS) and it answers
+       two questions: are you in District 13, and what did he do near you?
+       =================================================================== */
+    .near-form { display: flex; gap: 8px; margin-bottom: 10px; }
+    .near-form input {
+      flex: 1; min-width: 0; padding: 10px 12px;
+      border: 1px solid var(--line); border-radius: 2px;
+      font-family: var(--chrome); font-size: .82rem;
+    }
+    .near-form input:focus { border-color: var(--navy); }
+    .btn-sm { padding: 10px 13px; font-size: .72rem; }
+    .btn-navy { background: var(--navy); color: #fff; }
+    .btn-navy:hover { background: var(--gold); color: #000; }
+    .btn-outline {
+      background: var(--paper); color: var(--navy); border-color: var(--line);
+    }
+    .btn-outline:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .near-verdict {
+      padding: 11px 12px; margin: 12px 0 8px; border-radius: 2px;
+      font-family: var(--chrome); font-size: .78rem; font-weight: 600; line-height: 1.5;
+    }
+    .near-verdict.inside { background: #e8f2e8; color: #17501f; border-left: 3px solid #2e7d32; }
+    .near-verdict.outside { background: var(--wash); color: var(--navy-deep); border-left: 3px solid var(--navy); }
+    .near-verdict.error { background: #fdf0e6; color: #8a4b10; border-left: 3px solid #c96a1b; }
+    .near-dist {
+      flex: none; font-size: .66rem; font-weight: 700;
+      color: var(--navy); letter-spacing: .5px;
+    }
+    /* the "you are here" marker */
+    .me-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--navy); border: 3px solid #fff;
+      box-shadow: 0 0 0 3px rgba(15,68,128,.35), 0 2px 6px rgba(7,39,75,.5);
+    }
+
+    /* --- pin markers: a colored badge with a white category icon --------
+       Size comes from --s, set per pin by map.js. That's the hierarchy:
+       a funded win is a big pin, a bill is a normal pin, and showing up
+       somewhere is a small quiet dot. Color still means category. */
     .pin-marker { background: transparent; border: 0; }
     .pin-badge {
-      width: 30px; height: 30px; border-radius: 50%;
+      width: var(--s, 30px); height: var(--s, 30px); border-radius: 50%;
       background: var(--c); color: #fff; border: 2.5px solid #fff;
       box-shadow: 0 2px 6px rgba(7,39,75,.45);
       display: grid; place-items: center; transition: transform .2s ease-in-out;
     }
-    .pin-badge svg { width: 16px; height: 16px; }
+    .pin-badge svg { width: calc(var(--s, 30px) * .52); height: calc(var(--s, 30px) * .52); }
     .pin-marker:hover .pin-badge { transform: scale(1.18); z-index: 1000; }
+
+    /* Funded wins get the gold ring — the same accent as the district
+       boundary and the source button, used sparingly and on purpose. */
+    .pin-funding {
+      border-width: 3px;
+      box-shadow: 0 0 0 2.5px var(--gold), 0 3px 9px rgba(7,39,75,.5);
+    }
+    /* Showing up: a small dot, no glyph, slightly stepped back. It reads as
+       texture across the district instead of competing with the wins. */
+    .pin-presence {
+      border-width: 2px; opacity: .78;
+      box-shadow: 0 1px 3px rgba(7,39,75,.4);
+    }
+    .pin-marker:hover .pin-presence { opacity: 1; }
+
+    /* The pin the tour (or the list, or a deep link) is pointing at, so you
+       can tell which one the map just flew to. */
+    .pin-badge.is-target {
+      animation: pulse 1.6s ease-out 2;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(242,179,37,.85), 0 3px 9px rgba(7,39,75,.5); }
+      100% { box-shadow: 0 0 0 22px rgba(242,179,37,0), 0 3px 9px rgba(7,39,75,.5); }
+    }
+
+    /* --- popup extras: the program line, the lead line, the photo ------- */
+    .pop-series {
+      font-family: var(--chrome); font-size: .64rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--navy); margin-bottom: 7px;
+    }
+    .pop-series span { font-weight: 400; color: var(--muted); letter-spacing: 1px; }
+    .pop-amount {
+      display: inline-block; padding: 3px 9px; border-radius: 2px;
+      background: var(--gold); color: #000;
+      font-family: var(--chrome); font-size: .68rem; font-weight: 700;
+      letter-spacing: .5px;
+    }
+    /* The one-line takeaway above the summary. It is assembled from fields
+       the row already has (kind, amount, city) — it never invents a claim. */
+    .pop-lead {
+      font-family: var(--chrome); font-size: .78rem; font-weight: 700;
+      letter-spacing: .3px; color: var(--navy);
+      padding: 8px 0 10px; margin-bottom: 10px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .pop-photo {
+      margin: -16px -18px 12px; background: var(--wash);
+    }
+    .pop-photo img {
+      display: block; width: 100%; height: auto; max-height: 190px;
+      object-fit: cover;
+    }
+    .pop-photo figcaption {
+      padding: 7px 18px 9px;
+      font-family: var(--chrome); font-size: .66rem; line-height: 1.5; color: var(--muted);
+    }
+    .pop-photo figcaption i { font-style: normal; opacity: .75; }
 
     /* --- popup card ---------------------------------------------------- */
     .leaflet-popup-content-wrapper {
       border-radius: 2px; box-shadow: var(--shadow);
       border-top: 5px solid var(--navy);
+      overflow: hidden;  /* keeps the bleed-to-edge photo inside the corners */
     }
-    .leaflet-popup-content { margin: 16px 18px; }
+    /* Cap the popup and let it scroll inside itself. Some summaries run long,
+       and a popup taller than the map gets its title clipped off the top edge
+       where Leaflet's auto-pan can't rescue it — which is exactly what happened
+       on a laptop-height window. */
+    .leaflet-popup-content {
+      margin: 16px 18px;
+      max-height: min(58vh, 430px); overflow-y: auto;
+      overscroll-behavior: contain;
+    }
     .pop-title {
       font-family: var(--display); font-weight: 700; font-size: 1.08rem;
       line-height: 1.28; color: var(--navy-deep); margin-bottom: 9px;
@@ -256,6 +762,19 @@
     .leaflet-popup-content a.pop-source:hover {
       background: var(--navy); color: #fff !important;
     }
+    /* "Copy a link to this pin" — the share affordance that makes a single
+       accomplishment sendable in an email. */
+    .pop-share {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin: 15px 0 0 8px; padding: 11px 12px;
+      border: 1px solid var(--line); border-radius: 2px;
+      background: var(--paper); color: var(--navy);
+      font-family: var(--chrome); font-size: .72rem; font-weight: 600;
+      cursor: pointer;
+      transition: background .3s ease-in-out, color .3s ease-in-out, border-color .3s ease-in-out;
+    }
+    .pop-share:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .pop-share svg { width: 13px; height: 13px; }
 
     /* --- Leaflet zoom buttons: match the panel styling ------------------ */
     .leaflet-bar { border: 0; box-shadow: var(--shadow); border-radius: 2px; overflow: hidden; }
@@ -289,19 +808,131 @@
     footer.site-foot a { color: var(--gold); text-decoration: none; }
     footer.site-foot a:hover { color: #fff; }
 
-    /* --- small screens: stack the sidebar under the map ----------------- */
+    /* ===================================================================
+       PHONES — the bottom sheet.
+       Most people will open this on a phone, and stacking a sidebar under
+       a short map is not a real mobile design. Instead the map goes
+       full-screen and the panel becomes a sheet you drag up from the
+       bottom, with three resting positions: peek, half, and full.
+       =================================================================== */
     @media (max-width: 860px) {
-      header { flex-wrap: wrap; gap: 14px; padding: 16px 5%; }
-      header h1 { font-size: 1.45rem; }
-      .head-stat { text-align: left; }
-      body { height: auto; }
-      .layout { flex-direction: column; }
-      #map { height: 62vh; }
-      aside { width: auto; border-left: 0; border-top: 1px solid var(--line); }
+      header { flex-wrap: wrap; gap: 12px; padding: 14px 5%; }
+      header h1 { font-size: 1.2rem; }
+      header .lede { display: none; }         /* the hero says this already */
+      .seal { width: 42px; height: 42px; font-size: .82rem; }
+      .head-stat {
+        width: 100%; text-align: left; padding: 9px 12px; font-size: .72rem;
+      }
+
+      /* The phone hero is anchored to the BOTTOM of the map and padded clear
+         of the sheet's peek — otherwise the two buttons, which are the whole
+         point of the screen, sit underneath the sheet where nobody sees them.
+         The lede paragraph goes; the stats and the honesty line say it. */
+      .hero {
+        justify-content: flex-end;
+        padding: 18px 20px calc(var(--peek) + 16px);
+      }
+      .hero .eyebrow { display: none; }
+      /* Hide the intro lede on a phone — but NOT the caveat, which is also a
+         <p>. A bare `.hero p` rule out-specifies `.hero-caveat` and silently
+         deleted the one line on this page that has to be read. */
+      .hero p:not(.hero-caveat) { display: none; }
+      .hero h2 { font-size: 1.4rem; margin-bottom: 12px; }
+      .hero-stats { gap: 10px 20px; margin-bottom: 12px; }
+      .hero-stat strong { font-size: 1.3rem; }
+      .hero-stat span { font-size: .6rem; letter-spacing: 1px; margin-top: 2px; }
+      /* Over a bright basemap the 60%-white caveat all but vanishes on a
+         phone, and this is the one line on the page that must be read. */
+      .hero-caveat {
+        font-size: .7rem; margin-bottom: 14px; padding-left: 10px;
+        color: rgba(255,255,255,.85);
+        text-shadow: 0 1px 3px rgba(7,39,75,.9);
+      }
+      .hero h2 { text-shadow: 0 2px 8px rgba(7,39,75,.75); }
+      .hero-actions .btn { flex: 1; justify-content: center; }
+
+      /* Touch devices pinch to zoom, so the +/- buttons are dead weight — and
+         they sit exactly where the hero headline starts, covering the first
+         letter of it. */
+      .leaflet-control-zoom { display: none; }
+
+      :root { --peek: 132px; }
+
+      .layout { display: block; position: relative; flex: 1; min-height: 0; }
+      .map-wrap { position: absolute; inset: 0; }
+
+      /* The sheet. It's positioned by a transform that JS animates and
+         snaps — translateY(0) is fully open, larger values slide it down. */
+      aside {
+        position: absolute; left: 0; right: 0; bottom: 0; top: auto;
+        width: auto; height: 92%;
+        z-index: 1000;
+        border-left: 0;
+        border-top-left-radius: 10px; border-top-right-radius: 10px;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(var(--sheet-y, calc(100% - var(--peek))));
+        touch-action: none;   /* the grip handles the gesture itself */
+      }
+      aside.snapping { transition: transform .34s cubic-bezier(.32,.72,0,1); }
+      /* Momentum scrolling inside the sheet on iOS. */
+      .sheet-scroll { -webkit-overflow-scrolling: touch; }
+
+      .panel-grip {
+        display: block; flex: none;
+        padding: 9px 0 5px; cursor: grab;
+        background: var(--light);
+        border-top-left-radius: 10px; border-top-right-radius: 10px;
+        touch-action: none;
+      }
+      .panel-grip::before {
+        content: ""; display: block; width: 42px; height: 4px; margin: 0 auto;
+        background: var(--line); border-radius: 2px;
+      }
+      .panel-grip:active { cursor: grabbing; }
+
+      .panel-search { padding: 6px 14px 10px; }
+      .tab { font-size: .68rem; padding: 11px 4px 9px; }
+      .tab-pane { padding: 16px 14px 40px; }
+
+      /* Bigger tap targets — a 27px legend badge is fine with a mouse and
+         annoying with a thumb. */
+      .legend-row { padding: 11px 8px; }
+      .pin-row { padding: 14px 8px; }
+      .city-row { padding: 14px 8px; }
+
+      .map-dock { left: 10px; right: 10px; }
+      .timeline { gap: 10px; padding: 9px 11px; }
+      .timeline-label { min-width: 0; font-size: .68rem; }
+
+      /* Leaflet's own controls need to clear the sheet too. */
+      .leaflet-bottom { bottom: var(--peek); }
+
+      footer.site-foot { padding: 18px 6% 26px; gap: 16px; }
+    }
+
+    /* A short window (a laptop, or a phone in landscape) gets a compact hero
+       rather than a scrolling one. Same words, less air. */
+    @media (max-height: 760px) {
+      .hero { padding: 3% 6%; justify-content: flex-start; }
+      .hero h2 { font-size: clamp(1.3rem, 2.6vw, 1.8rem); margin-bottom: 8px; }
+      .hero p { margin-bottom: 14px; font-size: .92rem; }
+      .hero-stats { gap: 12px 26px; margin-bottom: 14px; }
+      .hero-stat strong { font-size: clamp(1.2rem, 2.2vw, 1.5rem); }
+      .hero-caveat { margin-bottom: 14px; font-size: .7rem; }
+      .btn { padding: 10px 16px; }
+    }
+
+    /* Anyone who has asked their system to reduce motion gets no intro
+       flight, no tour animation, and no pulsing pin. */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+          transition-duration: .001ms !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#tab-list">Skip the map — read the list of accomplishments</a>
+
   <header>
     <div class="seal" aria-hidden="true">13</div>
     <div class="head-main">
@@ -313,26 +944,173 @@
   </header>
 
   <div class="layout">
-    <div id="map"></div>
-    <aside>
-      <div class="card">
-        <h2>Categories</h2>
-        <p class="hint">Click a category to show or hide its pins.</p>
-        <div id="legend"></div>
+    <div class="map-wrap">
+      <div id="map"></div>
+
+      <!-- The landing moment. Everything with a data-* hook is filled in
+           from accomplishments.json so no number here is ever hand-typed. -->
+      <section class="hero" id="hero" aria-label="Introduction">
+        <div class="hero-inner">
+          <span class="eyebrow">The record so far</span>
+          <h2>Every pin is a place he changed something.</h2>
+          <p>Funding secured, laws authored, and time spent in the district — each one backed by an official source you can read yourself.</p>
+
+          <div class="hero-stats" id="hero-stats"></div>
+
+          <p class="hero-caveat" id="hero-caveat"></p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="hero-explore" type="button">
+              Explore the map
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </button>
+            <button class="btn btn-ghost" id="hero-tour" type="button">
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              Play the tour
+            </button>
+            <a class="btn btn-ghost" id="hero-bio"
+               href="https://sd13.senate.ca.gov/biography"
+               target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Read his biography
+              <span class="visually-hidden"> (opens the senator's official site in a new tab)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Floating controls over the bottom of the map. -->
+      <div class="map-dock">
+        <div class="dock-card tour-bar" id="tour-bar" hidden>
+          <button class="icon-btn" id="tour-prev" type="button" aria-label="Previous stop">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <span class="tour-step" id="tour-step"></span>
+          <button class="icon-btn" id="tour-next" type="button" aria-label="Next stop">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+          <button class="icon-btn" id="tour-stop" type="button" aria-label="Stop the tour">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="dock-card timeline" id="timeline" hidden>
+          <button class="icon-btn" id="time-play" type="button" aria-label="Play the years in sequence">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <span class="timeline-label" id="time-label"></span>
+          <!-- autocomplete="off" matters here: browsers restore form-control
+               values across a reload, so a slider you once dragged to 2025
+               comes back at 2025 on the next visit and quietly hides a year's
+               worth of pins. -->
+          <input type="range" id="time-range" autocomplete="off"
+                 aria-label="Show accomplishments up to this year" />
+          <button class="icon-btn" id="time-reset" type="button" aria-label="Show all years">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <aside id="panel" aria-label="Filters and accomplishment list">
+      <!-- The drag handle. Invisible on desktop; on a phone it's how you
+           pull the sheet up over the map. -->
+      <div class="panel-grip" id="panel-grip" role="button" tabindex="0"
+           aria-label="Drag to resize this panel"></div>
+
+      <div class="panel-search">
+        <div class="search-field" id="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <label class="visually-hidden" for="search">Search accomplishments</label>
+          <input id="search" type="search" placeholder="Search a place, a project, a word&hellip;" autocomplete="off" />
+          <button class="search-clear" id="search-clear" type="button" aria-label="Clear the search">&times;</button>
+        </div>
       </div>
 
-      <div class="card">
-        <h2>Statewide work</h2>
-        <div id="statewide"></div>
+      <div class="sheet-scroll" id="sheet-scroll">
+        <div class="tabs" role="tablist" aria-label="Panel sections">
+          <button class="tab" id="tabbtn-explore" role="tab" aria-selected="true" aria-controls="tab-explore" type="button">Explore</button>
+          <button class="tab" id="tabbtn-list" role="tab" aria-selected="false" aria-controls="tab-list" type="button">All pins</button>
+          <button class="tab" id="tabbtn-cities" role="tab" aria-selected="false" aria-controls="tab-cities" type="button">Cities</button>
+        </div>
+
+        <!-- ============== EXPLORE ============== -->
+        <div class="tab-pane" id="tab-explore" role="tabpanel" aria-labelledby="tabbtn-explore" tabindex="0">
+          <div class="card" id="near-card">
+            <h2>What has he done near me?</h2>
+            <p class="hint">Type an address or use your location. Nothing is stored or sent anywhere.</p>
+            <div class="near-form">
+              <label class="visually-hidden" for="near-input">Your address</label>
+              <input id="near-input" type="text" placeholder="123 Main St, Redwood City" autocomplete="street-address" />
+              <button class="btn btn-sm btn-navy" id="near-go" type="button">Find</button>
+            </div>
+            <button class="btn btn-sm btn-outline" id="near-gps" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
+              Use my location
+            </button>
+            <div id="near-result" aria-live="polite"></div>
+          </div>
+
+          <div class="card">
+            <h2>Wins</h2>
+            <p class="hint">Money secured for a place. Click a category to show or hide its pins.</p>
+            <div id="legend-wins"></div>
+          </div>
+
+          <div class="card">
+            <h2>In the district</h2>
+            <p class="hint">Where he showed up in person — community coffees, help tables, seminars, awards.</p>
+            <button id="district-toggle" class="toggle-btn" type="button">Show community events</button>
+            <div id="district-body" hidden>
+              <div id="legend-district"></div>
+              <div id="programs"></div>
+            </div>
+          </div>
+
+          <div class="card card-flush" id="dollars">
+            <button id="dollar-head" class="panel-head" type="button" aria-expanded="false">
+              <span>Dollars secured</span>
+              <span class="chev" aria-hidden="true"></span>
+            </button>
+            <div id="dollar-body" class="panel-body" hidden>
+              <div id="dollar-total" class="dollar-total"></div>
+              <div id="dollar-note" class="dollar-note"></div>
+              <label class="switch">
+                <input type="checkbox" id="dollar-mode" />
+                <span>Size pins by amount</span>
+              </label>
+              <p class="switch-note">Shows only the funded projects, each pin scaled to the dollars it brought in.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Statewide work</h2>
+            <p class="hint">Laws and wins that aren't tied to one address in the district.</p>
+            <div id="statewide"></div>
+          </div>
+        </div>
+
+        <!-- ============== ALL PINS ============== -->
+        <div class="tab-pane" id="tab-list" role="tabpanel" aria-labelledby="tabbtn-list" tabindex="0" hidden>
+          <p class="list-status" id="list-status" aria-live="polite"></p>
+          <div id="pin-list"></div>
+        </div>
+
+        <!-- ============== CITIES ============== -->
+        <div class="tab-pane" id="tab-cities" role="tabpanel" aria-labelledby="tabbtn-cities" tabindex="0" hidden>
+          <p class="list-status">Tap a city to zoom to it. Tap again to clear.</p>
+          <div id="city-list"></div>
+        </div>
       </div>
     </aside>
   </div>
 
-  <footer class="site-foot">
+  <footer class="site-foot" id="site-foot">
     <div class="foot-note">
       <h3>About this map</h3>
       Every pin is a real, past action inside Senate District 13, backed by an official
       source — a bill, a state budget line, or a press release. Accuracy over volume.
+      This map is still being built, so it shows a floor on the record, not a ceiling.
     </div>
     <div class="foot-note">
       <h3>Sources</h3>
@@ -341,6 +1119,6 @@
     </div>
   </footer>
 
-  <script src="map.js?v=3b6b826d"></script>
+  <script src="map.js?v=f4def6ea"></script>
 </body>
 </html>
